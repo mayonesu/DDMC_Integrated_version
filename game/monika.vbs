@@ -1,0 +1,1 @@
+Call MsgBox("みんなオッケー？",vbInformation,"DDLC.exe")
