@@ -78,4 +78,10 @@ translate Japanese strings:
     old "I turned off the automatic confirmation feature."
     new "自動確認の機能をオフにしました。"
 
+    old "Do not close the game while it is downloading."
+    new "ダウンロード中はゲームを閉じないでください。"
+
+    old "An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone)."
+    new "ダウンロード中にエラーが発生しました。\n再度実行してもダウンロードできない場合、製作者のTwitter(@horizonmayone)までご連絡ください。"
+
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

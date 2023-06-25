@@ -6,7 +6,7 @@ define audio.m1b = "<loop 0>tl/None/bgm/m1b.ogg"
 define audio.t10s = "<loop 0>tl/None/bgm/10s.ogg"
 define audio.t5nr = "<loop 0>tl/None/bgm/5nr.ogg"
 define config.save_directory = "DDMC_v400"
-define config.name = "Doki Doki Murder Case! [v4.0.3]"
+define config.name = "Doki Doki Murder Case! [v4.1.0]"
 define audio.t5s = "<loop 4.444>bgm/5_sayori.ogg"
 define audio.t5y = "<loop 4.444>bgm/5_yuri.ogg"
 define audio.t5n = "<loop 4.444>bgm/5_natsuki.ogg"
@@ -22,7 +22,7 @@ define debug_mode = False
 define quick_menu_limit = False
 define server_version = ""
 define server_version_num = 0
-define ddmc_version = 403
+define ddmc_version = 404
 default persistent.normal_end = 0
 default persistent.chapter = False
 default persistent.chapter_sel = False
@@ -74,31 +74,31 @@ define wa = DynamicCharacter('w_name', image='wallace', what_prefix='"', what_su
 init python:
     if ddmm_online:
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using DDMM:playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM:playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using DDMM:playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM:playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using DDMM:playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM:playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using DDMM)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM)"
     elif ("steamapps" in config.basedir.lower()):
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using Steam:playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam:playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using Steam:playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam:playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using Steam:playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam:playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (using Steam)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam)"
     else:
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.0.3] (playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.1.0] (playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.0.3]"
+            config.name = "Doki Doki Murder Case! [v4.1.0]"
 
 init python:
     config.keymap['game_menu'].remove('K_ESCAPE')
@@ -229,7 +229,12 @@ init python:
         else:
             ver_check = True
         if not ver_check:
-            renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Function(get_newversion_data),Hide("confirm"),Show(screen="dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))], no_action=Hide("confirm"))
+            if renpy.windows:
+                renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Hide("confirm"), Show(screen="dialog", message="Do not close the game while it is downloading.",ok_action=Function(get_newversion_vbs))], no_action=Hide("confirm"))
+            elif renpy.linux:
+                renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Hide("confirm"), Show(screen="dialog", message="Do not close the game while it is downloading.",ok_action=Function(get_newversion_shellscript))], no_action=Hide("confirm"))
+            else:
+                renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Function(get_newversion_data),Hide("confirm"),Show(screen="dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))], no_action=Hide("confirm"))
         else:
             renpy.show_screen("dialog", message="This version is new!", ok_action=Hide("dialog"))
 
@@ -241,6 +246,45 @@ init python:
         download_url = "https://ddmc.ddlc-jp.com/download/download.php?download=" + num
         import webbrowser
         webbrowser.open(download_url)
+    
+    def get_newversion_vbs():
+        open(config.basedir + "/download.vbs", "w").write(renpy.file("download.vbs").read())
+        import os
+        import subprocess
+        si = subprocess.STARTUPINFO()
+        si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        cmd = "cscript " + config.basedir + "\\download.vbs"
+        subprocess.call(cmd, startupinfo=si, shell=True)
+        try: os.unlink(config.basedir + "/download.vbs")
+        except: pass         
+        get_newversion_download_check()
+
+    def get_newversion_shellscript():
+        open(config.basedir + "/download.sh", "w").write(renpy.file("download.sh").read())
+        import os
+        import subprocess
+        os.chmod(config.basedir + "/download.sh", 0777)
+        cmd = config.basedir + "/download.sh > download_status"
+        subprocess.call([cmd, "arguments"], shell=True)
+        try: os.unlink(config.basedir + "/download.sh")
+        except: pass         
+        get_newversion_download_check()
+
+    def get_newversion_download_check():
+        renpy.hide_screen("confirm")
+        renpy.hide_screen("dialog")
+        if renpy.loadable("../download_status"):
+            if open(renpy.config.basedir + '/download_status', "r").read() == "200":
+                renpy.show_screen("dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))
+            else:
+                try: os.unlink(config.basedir + "/latest.zip")
+                except: pass
+                renpy.notify("Error code:" + open(renpy.config.basedir + '/download_status', "r").read())
+                renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+            try: os.unlink(config.basedir + "/download_status")
+            except: pass
+        else:
+            renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
 
 
 # Sayori

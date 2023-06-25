@@ -153,11 +153,16 @@ translate None label:
                 menu:
                     "New version was found! Would you like to download now?"
                     "Yes":
-                        $ get_newversion_data()
-                        "Quit the game. After downloading and updating the patch, please launch the game again."
-                        $ renpy.quit()
+                        if renpy.windows:
+                            $ renpy.show_screen("dialog", message="Do not close the game while it is downloading.", ok_action=Function(get_newversion_vbs))
+                        elif renpy.linux:
+                            $ renpy.show_screen("dialog", message="Do not close the game while it is downloading.", ok_action=Function(get_newversion_shellscript))
+                        else:
+                            $ get_newversion_data()
+                            "Quit the game. After downloading and updating the patch, please launch the game again."
+                            $ renpy.quit()
                     "No":
-                        #いいえの場合は何もしないが、次回移行も再度チェックする。
+                        #いいえの場合は何もしないが、次回以降も再度チェックする。
                         "You can download it later, but we recommend using the latest version.\n(If you want to update, please download it from option menu.)"
                     "No(do not check automatically)":
                         #いいえの場合は何もしないが、次回起動時に再度チェックしない。
@@ -760,19 +765,6 @@ translate None label:
                 import os
                 try: os.unlink(renpy.config.gamedir + '/verskip')
                 except: pass
-        if not version_check(ddmc_version):
-            if not persistent.newver_skip:
-                $ quick_menu = False
-                menu:
-                    "New version was found! Would you like to download now?"
-                    "Yes":
-                        $ get_newversion_data()
-                        "Quit the game. After downloading and updating the patch, please launch the game again."
-                        $ renpy.quit()
-                    "No":
-                        #いいえの場合は何もしないが、次回起動時に再度チェックしない。
-                        $ persistent.newver_skip = True
-                        "You can download it later, but we recommend using the latest version.\n(If you want to update, please download it from option menu.)"
         $ main_menu = True
         if not renpy.loadable("../lang"):
             $ quick_menu = False

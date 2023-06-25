@@ -221,6 +221,7 @@ init python:
     build.classify("game/script-**.rpyc", "scripts_ddmc")
     build.classify("game/sound_test.rpyc", "scripts_ddmc")
     build.classify("game/**.vbs", "scripts_ddmc")
+    build.classify("game/**.sh", "scripts_ddmc")
     build.classify("game/ddmm_sdk.rpyc", "scripts_ddmc")
     build.classify("game/**.txt", "scripts_ddmc")
 

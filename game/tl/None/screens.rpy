@@ -654,7 +654,7 @@ translate None screen:
             xoffset -45 yoffset -30
             style "main_menu_version"
 
-        text "ddmc_v4.0.3":
+        text "ddmc_v4.1.0":
             xalign 1.0 yalign 1.0
             xoffset -43 yoffset -10
             style "main_menu_version"
