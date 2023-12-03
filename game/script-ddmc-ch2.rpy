@@ -21,6 +21,9 @@ label ch2_main:
     with open_eyes
     play music t2
     window show(None)
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     "Glorius morning."
     "Except the nightmare tortured me and pooled me into sweat."
     "I take a shower quickly and put the uniform on."

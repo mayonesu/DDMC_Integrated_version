@@ -94,8 +94,6 @@ label bad_yuri_main:
         $ persistent.achievement[1] = True
         play sound "tl/None/sfx/achievement.ogg"
         pause 2.0
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_earn_achievement("BAD_YURI")
     if persistent.chapter == False:
         return
     else:

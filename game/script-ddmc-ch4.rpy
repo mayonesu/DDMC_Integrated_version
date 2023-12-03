@@ -20,9 +20,6 @@ label ch4_main:
             $ renpy.notify(achievement_notify + achievement_name_8)
             $ persistent.achievement[7] = True
             play sound "tl/None/sfx/achievement.ogg"
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_register_achievement("MOUSE_SAYORI", achievement_name_8, achievement_message_8)
-            $ ddmm_earn_achievement("MOUSE_SAYORI")
         $ config.mouse = {"default": [
                                     ("gui/mouse/s_head2.png", 0, 0),
                                     ("gui/mouse/s_head2.png", 0, 0),
@@ -40,6 +37,14 @@ label ch4_main:
                                     ("gui/mouse/s_head2.png", 0, 0),
                                     ("gui/mouse/s_head.png", 0, 0),
                                     ]}
+        if not persistent.chapter and persistent.autosave_mode:
+            pause 2.5
+            $ renpy.save('autosave')
+            $ renpy.notify('autosaved.')
+    else:
+        if not persistent.chapter and persistent.autosave_mode:
+            $ renpy.save('autosave')
+            $ renpy.notify('autosaved.')
     voice "voice/monika/monika_ch4_01.ogg"
     m "Yay,you're back!"
     voice "voice/monika/monika_ch4_02.ogg"

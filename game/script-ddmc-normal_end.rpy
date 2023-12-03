@@ -1,4 +1,9 @@
-﻿init python:
+﻿image ddlc_line:
+    "images/ddlc_line.png"
+    size (440, 768)
+    xpos 320
+
+init python:
     currentuser = ""
     try:
         for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
@@ -15,8 +20,21 @@
 
 label normal_end:
     if not renpy.loadable("debug") and config.console:
-        call you_are_cheater
-        return
+        scene black
+        $ quick_menu = False
+        "I want you to play without cheating."
+        "{b}PLEASE.{/b}"
+        menu:
+            "Yes":
+                "Thank you."
+                $ persistent.cheat_detect = False
+                $ renpy.quit()
+            "No":
+                "{b}I don't know what will happen.{/b}"
+                $ persistent.cheat_detect = True
+        $ quick_menu = True
+    else:
+        $ persistent.cheat_detect = False
     $ persistent.chapter_seen[14] = True
     if persistent.gamepad:
         if persistent.change_buttons:
@@ -29,6 +47,12 @@ label normal_end:
     if renpy.variant("pc"):
         $ persistent.autoload = "normal_end"
     python:
+        f = open(renpy.config.gamedir + "/verskip", "w")
+        if persistent.newver_skip:
+            f.write("1")
+        else:
+            f.write("0")
+        f.close()
         persistent.clear[0] = True
         persistent.clear[1] = True
         persistent.clear[2] = True
@@ -110,7 +134,10 @@ label normal_end2:
     mc "Um? Wait...I got a text from Natsuki,too..."
     voice "voice/sayori/sayori_normal_12.ogg"
     s 3c "What does she say?"
-    mc "\'Never never forget to bring the pamphlets or I'll kill you two.\'..."
+    show ddlc_line with dissolve
+    $ pause()
+    #mc "\'Never never forget to bring the pamphlets or I'll kill you two.\'..."
+    hide ddlc_line with dissolve
     show sayori 4o
     "We exchange a look and cry..."
     show sayori 4m
@@ -249,16 +276,27 @@ label normal_end2:
         $ persistent.achievement[4] = True
         play sound "tl/None/sfx/achievement.ogg"
         pause 3.0
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_earn_achievement("WITHOUT_MONIKA")
     pause 1.0
     jump credits
     return
 
 label normal_end2_2:
     if not renpy.loadable("debug") and config.console:
-        call you_are_cheater
-        return
+        scene black
+        $ quick_menu = False
+        "I want you to play without cheating."
+        "{b}PLEASE.{/b}"
+        menu:
+            "Yes":
+                "Thank you."
+                $ persistent.cheat_detect = False
+                $ renpy.quit()
+            "No":
+                "{b}I don't know what will happen.{/b}"
+                $ persistent.cheat_detect = True
+        $ quick_menu = True
+    else:
+        $ persistent.cheat_detect = False
     $ persistent.chapter_seen[15] = True
     if persistent.gamepad:
         if persistent.change_buttons:
@@ -271,6 +309,12 @@ label normal_end2_2:
         $ persistent.autoload = "normal_end2_2"
     window hide(None)
     python:
+        f = open(renpy.config.gamedir + "/verskip", "w")
+        if persistent.newver_skip:
+            f.write("1")
+        else:
+            f.write("0")
+        f.close()
         persistent.clear[0] = False
         persistent.clear[1] = False
         persistent.clear[2] = False
@@ -331,8 +375,6 @@ label normal_end2_2_main:
         $ persistent.achievement[5] = True
         play sound "tl/None/sfx/achievement.ogg"
         pause 3.0
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_earn_achievement("NO_ONE")
     pause 2.0
     jump credits
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

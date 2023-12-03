@@ -18,6 +18,14 @@
     if persistent.new_name:
         $ renpy.notify("Saved your name as file \"name\".You can load your name from the file after you reset the game.")
         $ persistent.new_name = False
+        pause 2.5
+        if not persistent.chapter and persistent.autosave_mode:
+            $ renpy.save('autosave')
+            $ renpy.notify('autosaved.')
+    else:
+        if not persistent.chapter and persistent.autosave_mode:
+            $ renpy.save('autosave')
+            $ renpy.notify('autosaved.')
     window show(None)
     "What a wonderful weekend tonight !"
     "Now I'm spacing out for a while,sitting on the bed in my room."

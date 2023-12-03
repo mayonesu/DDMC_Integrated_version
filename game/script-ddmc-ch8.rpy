@@ -40,9 +40,10 @@ label ch8_main:
             $ renpy.notify(achievement_notify + achievement_name_10)
             $ persistent.achievement[9] = True
             play sound "tl/None/sfx/achievement.ogg"
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_register_achievement("FAKE_ERROR", achievement_name_10, achievement_message_10)
-            $ ddmm_earn_achievement("FAKE_ERROR")
+            pause 2.5
+            if not persistent.chapter and persistent.autosave_mode:
+                $ renpy.save('autosave')
+                $ renpy.notify('autosaved.')
         $ quick_menu = True
         if persistent.gamepad:
             if persistent.change_buttons:
@@ -67,9 +68,10 @@ label ch8_main:
             $ renpy.notify(achievement_notify + achievement_name_10)
             $ persistent.achievement[9] = True
             play sound "tl/None/sfx/achievement.ogg"
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_register_achievement("FAKE_ERROR", achievement_name_10, achievement_message_10)
-            $ ddmm_earn_achievement("FAKE_ERROR")
+            pause 2.5
+            if not persistent.chapter and persistent.autosave_mode:
+                $ renpy.save('autosave')
+                $ renpy.notify('autosaved.')
         $ quick_menu = True
         if persistent.gamepad:
             if persistent.change_buttons:
@@ -94,9 +96,10 @@ label ch8_main:
             $ renpy.notify(achievement_notify + achievement_name_10)
             $ persistent.achievement[9] = True
             play sound "tl/None/sfx/achievement.ogg"
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_register_achievement("FAKE_ERROR", achievement_name_10, achievement_message_10)
-            $ ddmm_earn_achievement("FAKE_ERROR")
+            pause 2.5
+            if not persistent.chapter and persistent.autosave_mode:
+                $ renpy.save('autosave')
+                $ renpy.notify('autosaved.')
         $ quick_menu = True
         if persistent.gamepad:
             if persistent.change_buttons:
@@ -106,6 +109,9 @@ label ch8_main:
         $ mouse_visible = True
     else:
         scene black
+        if not persistent.chapter and persistent.autosave_mode:
+            $ renpy.save('autosave')
+            $ renpy.notify('autosaved.')
     mc "Say something to me,Monika."
     mc "I only want to know the truth."
     mc "Sayori,Yuri and Natsuki...they are gone..."

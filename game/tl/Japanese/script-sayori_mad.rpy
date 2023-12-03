@@ -204,9 +204,6 @@ label sayori_mad3:
         $ persistent.achievement[13] = True
         play sound "tl/None/sfx/achievement.ogg"
     $ pause(3.0)
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_register_achievement("SPECIALBAD_SAYORI", "怒り狂ったサヨリ", "よくこのエンド見つけましたね")
-        $ ddmm_earn_achievement("SPECIALBAD_SAYORI")
     call sayori_madend
     return
 

@@ -11,6 +11,9 @@ label ch5_1_main:
         $ ddmc_chapter = 5
         $ style.say_dialogue = style.normal
         $ quick_menu = True
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     scene bg club_day2
     with wipeleft_scene
     play music t5

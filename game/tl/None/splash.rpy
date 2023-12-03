@@ -1,5 +1,4 @@
 ﻿#def version_checker:
-    
 
 translate None python:
     achievement_name_1 = "Bad End of Sayori"
@@ -33,6 +32,23 @@ translate None python:
     achievement_message_16 = "Stop horror elements suddenly come."
     achievement_message_17 = "It's so cute."
     achievement_notify = "You got a achievement:"
+    achievement_hint_1 = "Watch Sayori's bad ending route to the end."
+    achievement_hint_2 = "Watch Yuri's bad ending route to the end."
+    achievement_hint_3 = "Watch Natsuki's bad ending route to the end."
+    achievement_hint_4 = "Watch Monika's bad ending route to the end."
+    achievement_hint_5 = "Watch the normal ending route to the end."
+    achievement_hint_6 = "Watch the normal ending2 route to the end."
+    achievement_hint_7 = "Watch until the end of the story."
+    achievement_hint_8 = "If you enter Chapter 4 with a certain probability, the mouse icon will appear...?"
+    achievement_hint_9 = "In a certain scene in Chapter 6, \nsomething can be heard with a certain probability..."
+    achievement_hint_10 = "Enter Chapter 8 in full screen mode."
+    achievement_hint_11 = "Occurs with extremely low probability \nafter a certain line by Natsuki in Chapter 10."
+    achievement_hint_12 = "Occurs with a certain probability at the option in Chapter 3."
+    achievement_hint_13 = "Happens when choosing \"New Game\" with a 50% chance."
+    achievement_hint_14 = "What happens if you select \"New Game\" after deleting sayori.chr?"
+    achievement_hint_15 = "After everyone's files are deleted in Chapter 10, \nwhat happens when they are restored?"
+    achievement_hint_16 = "Occurs with a very low probability when starting the game"
+    achievement_hint_17 = "Which character appears on the title screen with a certain probability?"
 
 translate None image:
     image menu_art_y:
@@ -124,6 +140,7 @@ translate None python:
     splash_message_fake2 = "This mod is null."
     splash_message_fake3 = "Are you trying to cheat?"
     splash_message_default = "This game is not suitable for children\nor those who are easily disturbed."
+    splash_message_cheater = "I warned you properly."
 
 translate None image:
     image menu_logo:
@@ -133,6 +150,15 @@ translate None image:
         ycenter 120
         zoom 0.60
         menu_logo_move
+
+    image menu_logo_glitch:
+        "tl/None/gui/logo_qlitch.png"
+        subpixel True
+        xcenter 240
+        ycenter 120
+        zoom 0.60
+        menu_logo_move
+
 translate None label:
     label splashscreen:
         if renpy.loadable("verskip"):
@@ -157,6 +183,8 @@ translate None label:
                             $ renpy.show_screen("dialog", message="Do not close the game while it is downloading.", ok_action=Function(get_newversion_vbs))
                         elif renpy.linux:
                             $ renpy.show_screen("dialog", message="Do not close the game while it is downloading.", ok_action=Function(get_newversion_shellscript))
+                        elif renpy.macintosh:
+                            $ renpy.show_screen("dialog", message="Do not close the game while it is downloading.", ok_action=Function(get_newversion_shellscript_mac))
                         else:
                             $ get_newversion_data()
                             "Quit the game. After downloading and updating the patch, please launch the game again."
@@ -169,10 +197,10 @@ translate None label:
                         $ persistent.newver_skip = True
                         "You can download it later, but we recommend using the latest version.\n(If you want to update, please download it from option menu.)"
                         "I turned off the automatic confirmation feature."
-        if not renpy.loadable("debug"):
-            if config.console:
-                call you_are_cheater
-                return
+        #if not renpy.loadable("debug"):
+        #    if config.console:
+        #        call you_are_cheater
+        #        return
         if persistent.gamepad:
             if persistent.change_buttons:
                 $ config.pad_bindings["pad_a_press"] = [ ]
@@ -229,7 +257,7 @@ translate None label:
                                     f.write("0")
                                 f.close()
                         python hide:
-                            for i in range(0,16):
+                            for i in range(0,17):
                                 if i == 0:
                                     f = open(renpy.config.gamedir + "/achievement", "w")
                                 else:
@@ -272,7 +300,11 @@ translate None label:
                             if persistent.disable_voice:
                                 f.write("1")
                             else:
-                                f.write("0") 
+                                f.write("0")
+                            if persistent.autosave_mode:
+                                f.write("1")
+                            else:
+                                f.write("0")
                             f.close()
                             f2 = open(renpy.config.gamedir + "/verskip", "w")
                             if persistent.newver_skip:
@@ -398,6 +430,7 @@ translate None label:
             "You can't select the chapter that you've never seen in chapter selection from \"v1.2.16\""
             "If you see at once, you will be able to choose it."
             if renpy.loadable("options"):
+                $ skip_reload = True
                 python:
                     rf = open(renpy.config.gamedir + '/options', "rt")
                     ch = rf.read()
@@ -461,6 +494,10 @@ translate None label:
                         _preferences.volumes['voice'] = 0.00
                     else:
                         persistent.disable_voice = False
+                    if ch[8] == "1":
+                        persistent.autosave_mode = True
+                    else:
+                        persistent.autosave_mode = False
                     rf.close()
                     import os
                     try: os.unlink(renpy.config.gamedir + '/options')
@@ -480,6 +517,61 @@ translate None label:
                             $ persistent.save_name = False
                             "If you change this setting, you must set your name at \'Change player name\' from settings."
                     pause 1.0
+                    if persistent.save_name:
+                        python:
+                            from renpy.loadsave import dump, loads
+
+                            import glob
+
+
+                            if renpy.macintosh:
+                                rv = "~/Library/RenPy/"
+                                check_path = os.path.expanduser(rv)
+
+                            elif renpy.windows:
+                                if 'APPDATA' in os.environ:
+                                    check_path =  os.environ['APPDATA'] + "/RenPy/"
+                                else:
+                                    rv = "~/RenPy/"
+                                    check_path = os.path.expanduser(rv)
+
+                            else:
+                                rv = "~/.renpy/"
+                                check_path = os.path.expanduser(rv)
+
+                            save_path=glob.glob(check_path + 'DDLC/persistent')
+                            if not save_path:
+                                save_path=glob.glob(check_path + 'DDLC-*/persistent')
+
+                        if save_path:
+                            $ save_path=save_path[0]
+                            python:
+                                from renpy.loadsave import dump, loads
+
+
+                                f=file(save_path,"rb")
+                                s=f.read().decode("zlib")
+                                f.close()
+
+                                ddlc_persistent=loads(s)
+
+                            if ddlc_persistent.playername != "":
+                                "Save data for Doki Doki Literature Club was found."
+                                "You can import DDLC's player name."
+                                menu:
+                                    "Would you like to import DDLC's player name?(You can import it later.)\n(DDLC's player name is \"[ddlc_persistent.playername]\")"
+                                    "Yes":
+                                        python:
+                                            persistent.playername = ddlc_persistent.playername
+                                            player=persistent.playername
+                                            persistent.new_name = True
+                                            SaveName()
+                                            persistent.new_name = False
+                                            #import_name = True
+                                    "No":
+                                        $ ddlc_persistent.playername
+                                pause 1.0
+
                 if renpy.variant("pc"):
                     menu:
                         "Are you broadcasting or recording video now?"
@@ -511,24 +603,6 @@ translate None label:
                     "Light":
                         $ persistent.save_graphic = True
                 "You can change this from settings later."
-                #if ddmm_online:
-                    #pause 1.0
-                    #"Added DDMM achievement settings from \'v1.2.14\'."
-                    #menu:
-                        #"Do you want to use DDMM achievement?"
-                        #"Yes":
-                            #$ persistent.ddmm_achievement = True
-                            #python:
-                                #ddmm_register_achievement("BAD_SAYORI", achievement_name_1, achievement_message_1)
-                                #ddmm_register_achievement("BAD_YURI", achievement_name_2, achievement_message_2)
-                                #ddmm_register_achievement("BAD_NATSUKI", achievement_name_3, achievement_message_3)
-                                #ddmm_register_achievement("BAD_MONIKA", achievement_name_4, achievement_message_4)
-                                #ddmm_register_achievement("WITHOUT_MONIKA", achievement_name_5, achievement_message_5)
-                                #ddmm_register_achievement("NO_ONE", achievement_name_6, achievement_message_6)
-                                #ddmm_register_achievement("THE_TRUTH", achievement_name_7, achievement_message_7)
-                        #"No":
-                            #$ persistent.ddmm_achievement = False
-                    #"You can change this from settings later."
                 if not ("steamapps" in config.basedir.lower()):
                     pause 1.0
                     menu:
@@ -575,7 +649,7 @@ translate None label:
                                 config.pad_bindings["pad_righty_pos"] = [ ]
                     "You can change this from settings later."
                 pause 1.0
-                "We added 'Voice Mode' from v3.0.1."
+                "We added \'Voice Mode\' from v3.0.1."
                 "The main story contains a voice and you can be turned off if not needed."
                 menu:
                     "Do you want to turn on voice mode?"
@@ -585,11 +659,65 @@ translate None label:
                         $ persistent.disable_voice = True
                         $ _preferences.volumes['voice'] = 0.00
                 "You can change this from Volume setting after this."
+                pause 1.0
+                "We added \'Auto save Mode\' from v4.3.0."
+                "With the exception of some chapters, this is a function that automatically saves at the beginning of the last opened chapter.(It doesn't save in chapter mode.)"
+                menu:
+                    "Do you want to turn on Auto save mode?"
+                    "Yes":
+                        $ persistent.autosave_mode = True
+                    "No":
+                        $ persistent.autosave_mode = False
+                "You can change this from settings later."
+                #v4.0.0～4.2.0までに作られたDDMCのpersistentが存在するかチェック
+                python:
+                    from renpy.loadsave import dump, loads
+                    import glob
+
+                    if renpy.macintosh:
+                        rv = "~/Library/RenPy/"
+                        check_path = os.path.expanduser(rv)
+
+                    elif renpy.windows:
+                        if 'APPDATA' in os.environ:
+                            check_path =  os.environ['APPDATA'] + "/RenPy/"
+                    else:
+                        rv = "~/RenPy/"
+                        check_path = os.path.expanduser(rv)
+                    
+                    save_path=glob.glob(check_path + 'DDMC_v400/persistent')
+
+                if save_path:
+                    pause 1.0
+                    "DDMC's savedata from v4.0.0 to v4.2.0 was found."
+                    "You can import achievement and viewed chapter data."
+                    menu:
+                        "Do you want to import it?"
+                        "Yes":
+                            #アチーブメントと閲覧済みのチャプター状況をインポート
+                            python:
+                                save_path=save_path[0]
+                                from renpy.loadsave import dump, loads
+                                f=file(save_path,"rb")
+                                s=f.read().decode("zlib")
+                                f.close()
+                                old_ddmc_persistent=loads(s)
+                                persistent.achievement = old_ddmc_persistent.achievement 
+                                persistent.chapter_seen = old_ddmc_persistent.chapter_seen
+                        "No":
+                            $ save_path = None
             $ persistent.first_run = True
             scene tos2
             with Dissolve(1.5)
-            pause 1.0
-            scene white
+            if not skip_reload:
+                pause 1.0
+                "Reload the game to reflect the settings."
+                $ renpy.utter_restart()
+            #if import_name:
+            #    "Reload the game to reflect the player name."
+            #    $ renpy.utter_restart()
+            else:
+                scene white
 
 
         python:
@@ -718,14 +846,34 @@ translate None label:
                             pass
             "Please be careful not to delete \"lang\" file.{w=3.0}{nw}"
             $ quick_menu = True
+        if not renpy.loadable("debug") and config.console:
+            scene black
+            $ quick_menu = False
+            "I want you to play without cheating."
+            "{b}PLEASE.{/b}"
+            menu:
+                "Yes":
+                    "Thank you."
+                    $ persistent.cheat_detect = False
+                    $ renpy.quit()
+                "No":
+                    "{b}I don't know what will happen.{/b}"
+                    $ persistent.cheat_detect = True
+            $ quick_menu = True
+        else:
+            $ persistent.cheat_detect = False
         if not renpy.loadable("debug") and renpy.random.randint(0,59) == 0 and not persistent.relaunch:
             call first_horror
             return
         show white
         $ persistent.relaunch = False
         $ persistent.ghost_menu = False
-        $ splash_message = splash_message_default
-        $ config.main_menu_music = audio.t1
+        if persistent.cheat_detect:
+            $ splash_message = splash_message_cheater
+            $ config.main_menu_music = audio.t1b
+        else:
+            $ splash_message = splash_message_default
+            $ config.main_menu_music = audio.t1
         $ renpy.music.play(config.main_menu_music)
         $ starttime = datetime.datetime.now()
         show intro with Dissolve(0.5, alpha=True)
@@ -789,13 +937,18 @@ translate None label:
             "Please be careful not to delete \"lang\" file.{w=3.0}{nw}"
         show white
         $ persistent.ghost_menu = False
-        if persistent.normal_end == 1:
+        if persistent.cheat_detect:
+            $ splash_message = splash_message_cheater
+        elif persistent.normal_end == 1:
             $ splash_message = splash_message_fake
         elif persistent.normal_end == 2:
             $ splash_message = splash_message_fake2
         else:
             $ splash_message = splash_message_fake3
-        $ config.main_menu_music = audio.t1
+        if persistent.cheat_detect:
+            $ config.main_menu_music = audio.t1b
+        else:
+            $ config.main_menu_music = audio.t1
         $ renpy.music.play(config.main_menu_music)
         $ starttime = datetime.datetime.now()
         show intro with Dissolve(0.5, alpha=True)

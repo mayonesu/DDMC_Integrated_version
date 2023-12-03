@@ -13,6 +13,9 @@ label ch10_main:
         $ quick_menu = True
     scene black
     play music t6
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     "..."
     scene bg closet
     with dissolve_scene_full
@@ -68,9 +71,6 @@ label ch10_main:
             $ renpy.notify(achievement_notify + achievement_name_11)
             $ persistent.achievement[10] = True
             play sound "tl/None/sfx/achievement.ogg"
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_register_achievement("NATSUKI_FACE", achievement_name_11, achievement_message_11)
-            $ ddmm_earn_achievement("NATSUKI_FACE")
     else:
         show n_cg1_exp1 at cgfade
     "Suddenly Natsuki starts laughing."
@@ -817,8 +817,6 @@ label ch10_5_main:
             $ renpy.notify(achievement_notify + achievement_name_7)
             $ persistent.achievement[6] = True
             play sound "tl/None/sfx/achievement.ogg"
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_earn_achievement("THE_TRUTH")
         if persistent.chapter == False:
             return
         else:

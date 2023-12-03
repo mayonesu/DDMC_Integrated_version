@@ -20,9 +20,6 @@ label color_bar_main:
         $ renpy.notify(achievement_notify + achievement_name_13)
         $ persistent.achievement[12] = True
         play sound "tl/None/sfx/achievement.ogg"
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_register_achievement("COLOR_BAR", achievement_name_13, achievement_message_13)
-        $ ddmm_earn_achievement("COLOR_BAR")
     pause 2.0
     $ config.allow_skipping = True
     if persistent.gamepad:

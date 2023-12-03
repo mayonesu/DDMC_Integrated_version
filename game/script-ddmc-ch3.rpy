@@ -105,6 +105,9 @@ label ch3_1_main:
     scene bg house
     with dissolve_scene_full
     window show(None)
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     "It's the day of the festival."
     "Of all days,I expected this to be the one where I'd be walking to school with Sayori."
     "But Sayori isn't answering her phone."
@@ -358,9 +361,6 @@ label ch3_1_main:
                     $ renpy.notify(achievement_notify + achievement_name_12)
                     $ persistent.achievement[11] = True
                     play sound "tl/None/sfx/achievement.ogg"
-                if ddmm_online and persistent.ddmm_achievement:
-                    $ ddmm_register_achievement("SAYORI_EYE", achievement_name_12, achievement_message_12)
-                    $ ddmm_earn_achievement("SAYORI_EYE")
                 $ quick_menu = True
                 if persistent.gamepad:
                     if persistent.change_buttons:

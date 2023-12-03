@@ -26,6 +26,9 @@ label ch9_main:
     show monika_bg
     if not persistent.save_graphic:
         show monika_bg_highlight
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     play music m1
     voice "voice/monika/monika_ch9_01.ogg"
     m "What is the reality for you,[player]?"

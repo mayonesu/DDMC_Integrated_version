@@ -84,4 +84,28 @@ translate Japanese strings:
     old "An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone)."
     new "ダウンロード中にエラーが発生しました。\n再度実行してもダウンロードできない場合、製作者のTwitter(@horizonmayone)までご連絡ください。"
 
+    old "Would you like to import DDLC's player name?"
+    new "DDLCの主人公名を引き継ぎますか？"
+
+    old "DDLC's player name was not found."
+    new "DDLCの主人公名が取得できませんでした。"
+
+    old "DDLC's save data was not found."
+    new "DDLCのセーブデータが見つかりませんでした。"
+
+    old "Quit the game. After downloading and updating the patch, please launch the game again.\nSaved latest.zip to your desktop folder."
+    new "ゲームを終了します。ダウンロードとパッチ更新後、再度ゲームを起動してください。\nlatest.zipをデスクトップフォルダに保存しました。"
+
+    old "Autosave was not found."
+    new "オートセーブが見つかりませんでした。"
+
+    old "Autosave was deleted."
+    new "オートセーブを削除しました。"
+
+    old "Autosave was not deleted."
+    new "オートセーブが削除されませんでした。"
+
+    old "autosaved."
+    new "オートセーブしました。"
+
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

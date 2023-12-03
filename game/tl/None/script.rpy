@@ -114,11 +114,17 @@ translate None label:
                 $ config.pad_bindings["pad_b_press"] = [ ]
         $ config.allow_skipping = False
         stop music
-        window hide(None)
-        show you_are_cheater
+        $ quick_menu = False
+        $ main_menu = True
         play sound "tl/None/sfx/pi.ogg"
-        pause 5.0
-        $ delete_all_data()
+        show yct
+        "That's why I told you."
+        window hide(None)
+        pause 6.0
+        hide yct
+        scene red
+        $ renpy.call_screen("dialog", message="ILLEGAL INSTRUCTION\n596F752073686F756C646E2774206861766520646F6E6520746861742E", ok_action=Function(UninstallMod))
+        return
 
     label first_horror:
         if persistent.gamepad:
@@ -136,4 +142,5 @@ translate None label:
             $ persistent.achievement[15] = True
         $ renpy.quit()
 
+image yct = Movie(play="cheater.webm", size=(1280,720), loop=True)
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

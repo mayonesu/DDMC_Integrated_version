@@ -12,6 +12,9 @@ label ch6_1_main:
         $ style.say_dialogue = style.normal
         $ quick_menu = True
         scene bg club_day2
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     play music mend
     show yuri 4b at t11
     y "Umm...[player]?"
@@ -198,9 +201,6 @@ label ch6_2_main:
             $ persistent.achievement[8] = True
             play sound "tl/None/sfx/achievement.ogg"
             pause 2.0
-        if ddmm_online and persistent.ddmm_achievement:
-            $ ddmm_register_achievement("MAD_YURI", achievement_name_9, achievement_message_9)
-            $ ddmm_earn_achievement("MAD_YURI")
         pause 1.0
     scene bg club_day2
     with dissolve_scene_full

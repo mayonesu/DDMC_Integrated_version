@@ -22,6 +22,9 @@ label ch7_main:
     stop music
     $ persistent.monikatopics = []
     $ persistent.monika_reload = 0
+    if not persistent.chapter and persistent.autosave_mode:
+        $ renpy.save('autosave')
+        $ renpy.notify('autosaved.')
     scene black
     voice "voice/monika/monika_ch7_01.ogg"
     m "Uh,can you hear me?"

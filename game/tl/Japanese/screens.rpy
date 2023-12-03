@@ -428,8 +428,8 @@ translate Japanese strings:
     old "Are you sure you want to delete only save data?"
     new "セーブデータのみを削除してよろしいですか？"
 
-    old "The Original Work : Doki Doki Literature Club! by Team Salvato\nProgramming : mayonesu @horizonmayone\nScripts : yamamotoNEW @yamnewb\nCollaborator : katykmas @sinokoki_fps\nTest Players : Natsukiket @natsukiket\nSpecial Thanks to: Chris_K\nSpecial Thanks to: Proudust @proudust\nBackground Art Works: Kimagure After\n"
-    new "原案：Doki Doki Literature Club! by Team Salvato {a=https://twitter.com/dansalvato}{image=twitter.png}{/a}\nプログラミング： 堕天使マヨネーズ {a=https://twitter.com/horizonmayone}{image=twitter.png}{/a}\n脚本： 山本ニュー {a=https://twitter.com/MeshiMazuMonika}{image=twitter.png}{/a}\n協力： katykmas {a=https://twitter.com/sinokoki_fps}{image=twitter.png}{/a}\nテストプレイ：ナツキケット\nスペシャルサンクス： Chris_K\nスペシャルサンクス： Proudust {a=https://twitter.com/proudust}{image=twitter.png}{/a}\n背景画像： きまぐれアフター{a=https://k-after.at.webry.info/}(サイトページはこちら){/a}\nボイス：おぬこ(サヨリ) {a=https://twitter.com/NyancoOnuco}{image=twitter.png}{/a}\n　　　　ほわ子(ナツキ) {a=https://twitter.com/yRcUVCie6ZfP2zS}{image=twitter.png}{/a}\n　　　　シマナガエナ(ユリ) {a=https://twitter.com/ena_shimanaga}{image=twitter.png}{/a}\n　　　　観月咲良(モニカ) {a=https://twitter.com/Mitsuki_sakura2}{image=twitter.png}{/a}\n"
+    old "The Original Work : Doki Doki Literature Club! by Team Salvato\nProgramming : mayonesu @horizonmayone\nScripts : yamamotoNEW @yamnewb\nCollaborator : katykmas @katykmas\nTest Players : Natsukiket @natsukiket\nSpecial Thanks to: Chris_K\nSpecial Thanks to: Proudust @proudust\nBackground Art Works: Kimagure After\n"
+    new "原案：Doki Doki Literature Club! by Team Salvato {a=https://twitter.com/dansalvato}{image=x.png}{/a}\nプログラミング： 堕天使マヨネーズ {a=https://twitter.com/horizonmayone}{image=x.png}{/a}\n脚本： 山本ニュー {a=https://twitter.com/MeshiMazuMonika}{image=x.png}{/a}\n協力： katykmas {a=https://twitter.com/katykmas}{image=x.png}{/a}\nテストプレイ：ナツキケット\nスペシャルサンクス： Chris_K\nスペシャルサンクス： Proudust {a=https://twitter.com/proudust}{image=x.png}{/a}\n背景画像： きまぐれアフター{a=https://k-after.at.webry.info/}(サイトページはこちら){/a}\nボイス：おぬこ(サヨリ)\n　　　　ほわ子(ナツキ)\n　　　　シマナガエナ(ユリ) {a=https://twitter.com/ena_shimanaga}{image=x.png}{/a}\n　　　　観月咲良(モニカ)\n"
 
     old "Credits"
     new "クレジット"
@@ -476,4 +476,30 @@ translate Japanese strings:
     old "This version is new!"
     new "このバージョンは最新です！"
 
+    old "Import DDLC's player name"
+    new "DDLCの主人公名引き継ぎ"
+
+    old "Open Hint"
+    new "ヒントを見る"
+
+    old "Hide Hint"
+    new "ヒントを隠す"
+
+    old "Auto Save"
+    new "オートセーブ"
+
+    old "Are you sure to load Autosave?\n(It will start from the beginning of the last chapter you viewed.)"
+    new "オートセーブを読み込んでよろしいですか？\n(最後に見たチャプターの最初からになります。)"
+
+    old "Delete Autosave"
+    new "オートセーブ削除"
+
+    old "Are you sure you want to delete Autosave?"
+    new "オートセーブを削除してよろしいですか？"
+
+    old "Auto save mode"
+    new "オートセーブ機能"
+
+    old "Language settings was already changed."
+    new "言語設定はすでに変更済みです。"
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

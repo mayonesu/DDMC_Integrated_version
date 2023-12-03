@@ -96,8 +96,6 @@ label bad_monika_main:
         $ persistent.achievement[3] = True
         play sound "tl/None/sfx/achievement.ogg"
         pause 2.0
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_earn_achievement("BAD_MONIKA")
     if persistent.chapter == False:
         return
     else:

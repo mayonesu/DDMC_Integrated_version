@@ -441,18 +441,6 @@ translate None label:
             python:
                 try: renpy.file(config.basedir + "/DDMC_Thanks.pdf")
                 except: open(config.basedir + "/DDMC_Thanks.pdf", "wb").write(renpy.file("DDMC_Thanks.pdf").read())
-        if ddmm_online:
-            python hide:
-                for i in range(0,16):
-                    if i == 0:
-                         f = open(renpy.config.gamedir + "/chapter", "w")
-                    else:
-                        f = open(renpy.config.gamedir + "/chapter", "a")
-                    if persistent.chapter_seen[i]:
-                        f.write("1")
-                    else:
-                        f.write("0")
-                    f.close()
         label postcredits_loop:
             if renpy.variant("pc"):
                 $ persistent.autoload = "postcredits_loop"

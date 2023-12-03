@@ -34,12 +34,30 @@ translate Japanese python:
     achievement_message_16 = "急にホラー要素来ないでもろて"
     achievement_message_17 = "カワイイ、カワイイネ"
     achievement_notify = "アチーブメントを解除しました："
+    achievement_hint_1 = "サヨリのバッドエンドルートを最後まで見る"
+    achievement_hint_2 = "ユリのバッドエンドルートを最後まで見る"
+    achievement_hint_3 = "ナツキのバッドエンドルートを最後まで見る"
+    achievement_hint_4 = "モニカのバッドエンドルートを最後まで見る"
+    achievement_hint_5 = "ノーマルエンドのルートを最後まで見る"
+    achievement_hint_6 = "ノーマルエンド2のルートを最後まで見る"
+    achievement_hint_7 = "ストーリーの最後まで見る"
+    achievement_hint_8 = "一定の確率でチャプター4に入るとマウスアイコンが…？"
+    achievement_hint_9 = "チャプター6のとあるシーンにて一定の確率で何かが聞こえる…"
+    achievement_hint_10 = "フルスクリーンの状態でチャプター8に入る"
+    achievement_hint_11 = "チャプター10のとあるナツキのセリフの後、超絶低確率で起きます"
+    achievement_hint_12 = "チャプター3の選択肢のところにて一定の確率で起きます"
+    achievement_hint_13 = "50%の確率でニューゲームを選ぶと起きます"
+    achievement_hint_14 = "sayori.chrを削除した状態でニューゲームを選ぶと…？"
+    achievement_hint_15 = "チャプター10でみんなのファイルが消された後、元に戻すと…？"
+    achievement_hint_16 = "ゲーム起動時、超低確率で起きます"
+    achievement_hint_17 = "一定の確率でタイトル画面に表示されるキャラが…？"
 
 translate Japanese python:
     splash_message_default = "このゲームには子供に相応しくない内容、または\n刺激の強い表現が含まれています。"
     splash_message_fake = "このMODはお子様やフィクションに影響を受けやすい方にはおすすめしかねますし、\n原作改変に怒り狂う方や幸せ甘々文芸部をお求めの方も\nとっととお帰りになられたほうが賢明です。"
     splash_message_fake2 = "このMODはnull"
     splash_message_fake3 = "チートしようとしてる？"
+    splash_message_cheater = "ちゃんと警告したからね。"
     splash_messages = [
     "君は太陽、私だけの太陽。",
     "あなたに会いたかった。",
@@ -242,7 +260,7 @@ translate Japanese strings:
     old "If you see at once, you will be able to choose it."
     new "一度でも見れば選べるようになります。"
 
-    old "We added 'Voice Mode' from v3.0.1."
+    old "We added \'Voice Mode\' from v3.0.1."
     new "v3.0.1からボイスモードを追加しました。"
 
     old "The main story contains a voice and you can be turned off if not needed."
@@ -265,4 +283,53 @@ translate Japanese strings:
 
     old "No(do not check automatically)"
     new "いいえ(自動確認をしない)"
+
+    old "Save data for Doki Doki Literature Club was found."
+    new "Doki Doki Literature Clubのセーブデータが見つかりました。"
+
+    old "You can import DDLC's player name."
+    new "DDLCの主人公の名前を引き継ぐことができます。"
+
+    old "Would you like to import DDLC's player name?(You can import it later.)\n(DDLC's player name is \"[ddlc_persistent.playername]\")"
+    new "主人公の名前を引き継ぎますか？(後から引き継ぐことは可能です)\n(DDLC上のプレイヤー名は「[ddlc_persistent.playername]」です)"
+
+    old "Reload the game to reflect the player name."
+    new "主人公の名前を反映させるため、ゲームを再読み込みします。"
+
+    old "We added \'Auto save Mode\' from v4.3.0."
+    new "v4.3.0からオートセーブ機能を追加しました。"
+
+    old "With the exception of some chapters, this is a function that automatically saves at the beginning of the last opened chapter.(It doesn't save in chapter mode.)"
+    new "一部のチャプターを除いて、最後に開いたチャプターの最初に自動でセーブされる機能です。(チャプターモードではセーブされません)"
+
+    old "Do you want to turn on Auto save mode?"
+    new "オートセーブ機能をオンにしますか？"
+
+    old "Reload the game to reflect the settings."
+    new "設定を反映させるため、ゲームを再読み込みします。"
+
+    old "DDMC's savedata from v4.0.0 to v4.2.0 was found."
+    new "v4.0.0～v4.2.0のDDMCセーブデータが見つかりました。"
+
+    old "You can import achievement and viewed chapter data."
+    new "アチーブメントと閲覧済みのチャプター状況をインポートすることができます。"
+
+    old "Do you want to import it?"
+    new "インポートしますか？"
+
+    old "I want you to play without cheating."
+    new "チートしないでプレイしてほしいの。"
+
+    old "{b}PLEASE.{/b}"
+    new "{b}お願い。{/b}"
+
+    old "Thank you."
+    new "ありがとう。"
+
+    old "{b}I don't know what will happen.{/b}"
+    new "{b}どうなっても知らないからね。{/b}"
+
+    old "That's why I told you."
+    new "だから言ったのに。"
+
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

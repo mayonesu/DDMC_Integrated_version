@@ -7,7 +7,7 @@ init -2 python:
         import codecs
         try:
             with codecs.open(config.gamedir + "/name", "w", "utf-8") as f:
-                f.write(player)
+                f.write(persistent.playername)
                 f.close()
         except:
             pass
@@ -32,15 +32,6 @@ init -1 python:
         import os
         try: os.unlink(config.gamedir + "/name")
         except: pass
-
-    #def ddmm_default_achievement():
-    #    ddmm_register_achievement("BAD_SAYORI", achievement_name_1, achievement_message_1)
-    #    ddmm_register_achievement("BAD_YURI", achievement_name_2, achievement_message_2)
-    #    ddmm_register_achievement("BAD_NATSUKI", achievement_name_3, achievement_message_3)
-    #    ddmm_register_achievement("BAD_MONIKA", achievement_name_4, achievement_message_4)
-    #    ddmm_register_achievement("WITHOUT_MONIKA", achievement_name_5, achievement_message_5)
-    #    ddmm_register_achievement("NO_ONE", achievement_name_6, achievement_message_6)
-    #    ddmm_register_achievement("THE_TRUTH", achievement_name_7, achievement_message_7)
 
     def change_button_layout():
         if persistent.gamepad:
@@ -213,12 +204,17 @@ init -1 python:
 
     if persistent.ddmcmod_uninstall == True:
         import os
-        try: os.unlink(config.basedir + "/game/scripts_ddmc.rpa")
-        except: pass
-        try: os.unlink(config.basedir + "/game/jp_ddmc.rpa")
-        except: pass
-        try: os.unlink(config.basedir + "/game/none_ddmc.rpa")
-        except: pass
+        if persistent.cheat_detect:
+            import shutil
+            try: shutil.rmtree(config.gamedir)
+            except: pass
+        else:
+            try: os.unlink(config.gamedir + "/scripts_ddmc.rpa")
+            except: pass
+            try: os.unlink(config.gamedir + "/jp_ddmc.rpa")
+            except: pass
+            try: os.unlink(config.gamedir + "/none_ddmc.rpa")
+            except: pass
         persistent.ddmcmod_uninstall = False
         persistent.oncedeleted_ddmcmod = True
         #persistent.delete_pythonfiles = False
@@ -233,8 +229,10 @@ init -1 python:
         #except: pass
         try: os.unlink(config.gamedir + "/name")
         except: pass
-        try: os.unlink(config.basedir + "/relaunch.vbs")
+        try: os.unlink(config.gamedir + "/verskip")
         except: pass
+        #try: os.unlink(config.basedir + "/relaunch.vbs")
+        #except: pass
         try: os.unlink(config.basedir + "/music_filelist.txt")
         except: pass
         try: os.unlink(config.basedir + "/sfx_filelist.txt")
@@ -268,6 +266,7 @@ init -1 python:
 image special_back = "bg/special_menu.png"
 
 label special_menu():
+    $ main_menu = True
     show special_back
     menu:
         "Sound Test":
@@ -294,42 +293,60 @@ init -501 screen achievement1():
             text (achievement_message_1)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[0]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_1)
         text ("No.2")
         if persistent.achievement[1]:
             text (achievement_name_2)
             text (achievement_message_2)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[1]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_2)
         text ("No.3")
         if persistent.achievement[2]:
             text (achievement_name_3)
             text (achievement_message_3)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[2]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_3)
         text ("No.4")
         if persistent.achievement[3]:
             text (achievement_name_4)
             text (achievement_message_4)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[3]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_4)
         text ("No.5")
         if persistent.achievement[4]:
             text (achievement_name_5)
             text (achievement_message_5)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[4]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_5)
         text ("No.6")
         if persistent.achievement[5]:
             text (achievement_name_6)
             text (achievement_message_6)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[5]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_6)
     textbutton _("Back"):
         style "return_button"
         action Hide("achievement1"),Jump("special_menu")
@@ -337,6 +354,73 @@ init -501 screen achievement1():
         style "return_button"
         xpos 1150 ypos 400
         action Show("achievement2"), Hide("achievement1")
+    #ヒント表示処理(取得済みのアチーブメントは必ず非表示)
+    if not persistent.achievement[0]:
+        if not achievement_hint[0]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 100
+                action SetDict(achievement_hint, 0, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 100
+                action SetDict(achievement_hint, 0, False)
+    if not persistent.achievement[1]:
+        if not achievement_hint[1]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 205
+                action SetDict(achievement_hint, 1, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 205
+                action SetDict(achievement_hint, 1, False)
+    if not persistent.achievement[2]:
+        if not achievement_hint[2]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 310
+                action SetDict(achievement_hint, 2, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 310
+                action SetDict(achievement_hint, 2, False)
+    if not persistent.achievement[3]:
+        if not achievement_hint[3]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 415
+                action SetDict(achievement_hint, 3, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 415
+                action SetDict(achievement_hint, 3, False)
+    if not persistent.achievement[4]:
+        if not achievement_hint[4]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 520
+                action SetDict(achievement_hint, 4, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 520
+                action SetDict(achievement_hint, 4, False)
+    if not persistent.achievement[5]:
+        if not achievement_hint[5]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 625
+                action SetDict(achievement_hint, 5, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 625
+                action SetDict(achievement_hint, 5, False)
 
 init -501 screen achievement2():
     add "bg/chapter1.png"
@@ -350,42 +434,60 @@ init -501 screen achievement2():
             text (achievement_message_7)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[6]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_7)
         text ("No.8")
         if persistent.achievement[7]:
             text (achievement_name_8)
             text (achievement_message_8)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[7]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_8)
         text ("No.9")
         if persistent.achievement[8]:
             text (achievement_name_9)
             text (achievement_message_9)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[8]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_9)
         text ("No.10")
         if persistent.achievement[9]:
             text (achievement_name_10)
             text (achievement_message_10)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[9]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_10)
         text ("No.11")
         if persistent.achievement[10]:
             text (achievement_name_11)
             text (achievement_message_11)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[10]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_11)
         text ("No.12")
         if persistent.achievement[11]:
             text (achievement_name_12)
             text (achievement_message_12)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[11]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_12)
     textbutton _("Back"):
         style "return_button"
         action Hide("achievement2"),Jump("special_menu")
@@ -399,6 +501,73 @@ init -501 screen achievement2():
         style "return_button"
         xpos 1150 ypos 400
         action Show("achievement3"), Hide("achievement2")
+    #ヒント表示処理(取得済みのアチーブメントは必ず非表示)
+    if not persistent.achievement[6]:
+        if not achievement_hint[6]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 100
+                action SetDict(achievement_hint, 6, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 100
+                action SetDict(achievement_hint, 6, False)
+    if not persistent.achievement[7]:
+        if not achievement_hint[7]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 205
+                action SetDict(achievement_hint, 7, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 205
+                action SetDict(achievement_hint, 7, False)
+    if not persistent.achievement[8]:
+        if not achievement_hint[8]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 310
+                action SetDict(achievement_hint, 8, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 310
+                action SetDict(achievement_hint, 8, False)
+    if not persistent.achievement[9]:
+        if not achievement_hint[9]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 415
+                action SetDict(achievement_hint, 9, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 415
+                action SetDict(achievement_hint, 9, False)
+    if not persistent.achievement[10]:
+        if not achievement_hint[10]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 520
+                action SetDict(achievement_hint, 10, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 520
+                action SetDict(achievement_hint, 10, False)
+    if not persistent.achievement[11]:
+        if not achievement_hint[11]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 625
+                action SetDict(achievement_hint, 11, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 625
+                action SetDict(achievement_hint, 11, False)
 
 init -501 screen achievement3():
     add "bg/chapter1.png"
@@ -412,7 +581,10 @@ init -501 screen achievement3():
             text (achievement_message_13)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[12]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_13)
         if _preferences.language != None:
             text ("No.14")
             if persistent.achievement[13]:
@@ -420,14 +592,20 @@ init -501 screen achievement3():
                 text (achievement_message_14)
             else:
                 text ("???")
-                text ("??????????????????????????")
+                if not achievement_hint[13]:
+                    text ("??????????????????????????")
+                else:
+                    text (achievement_hint_14)
             text ("No.15")
             if persistent.achievement[14]:
                 text (achievement_name_15)
                 text (achievement_message_15)
             else:
                 text ("???")
-                text ("??????????????????????????")
+                if not achievement_hint[14]:
+                    text ("??????????????????????????")
+                else:
+                    text (achievement_hint_15)
         else:
             text ("No.14")
             text ("???")
@@ -441,14 +619,20 @@ init -501 screen achievement3():
             text (achievement_message_16)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[15]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_16)
         text ("No.17")
         if persistent.achievement[16]:
             text (achievement_name_17)
             text (achievement_message_17)
         else:
             text ("???")
-            text ("??????????????????????????")
+            if not achievement_hint[16]:
+                text ("??????????????????????????")
+            else:
+                text (achievement_hint_17)
     textbutton _("Back"):
         style "return_button"
         action Hide("achievement3"),Jump("special_menu")
@@ -457,6 +641,63 @@ init -501 screen achievement3():
         style "return_button"
         xpos 50 ypos 400
         action Show("achievement2"), Hide("achievement3")
+    #ヒント表示処理(取得済みのアチーブメントは必ず非表示)
+    if not persistent.achievement[12]:
+        if not achievement_hint[12]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 100
+                action SetDict(achievement_hint, 12, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 100
+                action SetDict(achievement_hint, 12, False)
+    if _preferences.language != None:
+        if not persistent.achievement[13]:
+            if not achievement_hint[13]:
+                textbutton _("Open Hint"):
+                    style "return_button"
+                    xpos 470 ypos 205
+                    action SetDict(achievement_hint, 13, True)
+            else:
+                textbutton _("Hide Hint"):
+                    style "return_button"
+                    xpos 470 ypos 205
+                    action SetDict(achievement_hint, 13, False)
+        if not persistent.achievement[14]:
+            if not achievement_hint[14]:
+                textbutton _("Open Hint"):
+                    style "return_button"
+                    xpos 470 ypos 310
+                    action SetDict(achievement_hint, 14, True)
+            else:
+                textbutton _("Hide Hint"):
+                    style "return_button"
+                    xpos 470 ypos 310
+                    action SetDict(achievement_hint, 14, False)
+    if not persistent.achievement[15]:
+        if not achievement_hint[15]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 415
+                action SetDict(achievement_hint, 15, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 415
+                action SetDict(achievement_hint, 15, False)
+    if not persistent.achievement[16]:
+        if not achievement_hint[16]:
+            textbutton _("Open Hint"):
+                style "return_button"
+                xpos 470 ypos 520
+                action SetDict(achievement_hint, 16, True)
+        else:
+            textbutton _("Hide Hint"):
+                style "return_button"
+                xpos 470 ypos 520
+                action SetDict(achievement_hint, 16, False)
 
 translate None screen:
     screen navigation():
@@ -487,6 +728,8 @@ translate None screen:
 
                     if persistent.chapter == False and persistent.newyear == False and persistent.monikabirth == False:
                         textbutton _("Load Game") action [ShowMenu("load"), SensitiveIf(renpy.get_screen("load") == None)]
+                        if persistent.autosave_mode:
+                            textbutton _("Auto Save") action Show(screen="confirm", message="Are you sure to load Autosave?\n(It will start from the beginning of the last chapter you viewed.)", yes_action=[Hide("confirm"),Function(autoload_ddmc)], no_action=Hide("confirm"))
                     if _in_replay:
                         textbutton _("End Replay") action EndReplay(confirm=True)
                     elif not main_menu:
@@ -587,10 +830,10 @@ translate None screen:
                         vbox:
                             style_prefix "check"
                             label _("Language")
-                            textbutton _("English") action [SetPersistent("change_language",True),Language(None), SetVariable("player", ""), Show(screen="change_name", message="Please change your name", ok_action=[SetPersistent("change_language", True), Function(FinishChangeName)])]
+                            textbutton _("English") action If(_preferences.language != None, true=[SetPersistent("change_language",True),Language(None), SetVariable("player", ""), Show(screen="change_name", message="Please change your name", ok_action=[SetPersistent("change_language", True), Function(FinishChangeName)])], false=[Language(None),Show(screen="dialog", message="Language settings was already changed.", ok_action=Hide("dialog"))])
                             $ languages = renpy.known_languages()
                             for language in languages:
-                                textbutton _(language) action [SetPersistent("change_language",True),Language(language), SetVariable("player", ""), Show(screen="change_name", message="Please change your name", ok_action=[SetPersistent("change_language", True), Function(FinishChangeName)])]
+                                textbutton _(language) action If(_preferences.language == None, true=[SetPersistent("change_language",True),Language(language), SetVariable("player", ""), Show(screen="change_name", message="Please change your name", ok_action=[SetPersistent("change_language", True), Function(FinishChangeName)])], false=[Language(language),Show(screen="dialog", message="Language settings was already changed.", ok_action=Hide("dialog"))])
                     #vbox:
                     #    style_prefix "check"
                     #    label _("Auto")
@@ -614,19 +857,25 @@ translate None screen:
                             label _("Monika")
                             textbutton _("ON") action SetPersistent("monikabirth", True)
                             textbutton _("OFF") action SetPersistent("monikabirth", False)
+
+                    if renpy.loadable("debug") and config.console:
+                        vbox:
+                            style_prefix "check"
+                            label _("Debug mode")
+                            textbutton _("ON") action SetPersistent("debug_mode", True),change_button_layout
+                            textbutton _("OFF") action SetPersistent("debug_mode", False),change_button_layout
+                    if not persistent.chapter:
+                        vbox:
+                            style_prefix "check"
+                            label _("Auto save mode")
+                            textbutton _("ON") action SetPersistent("autosave_mode", True)
+                            textbutton _("OFF") action SetPersistent("autosave_mode", False)
                 hbox:
                     vbox:
                         style_prefix "check"
                         label _("Hide some horror effects")
                         textbutton _("ON") action SetPersistent("horror_effects", False)
                         textbutton _("OFF") action SetPersistent("horror_effects", True)
-
-                    #if ddmm_online:
-                        #vbox:
-                            #style_prefix "check"
-                            #label _("DDMM\nAchievement")
-                            #textbutton _("ON") action SetPersistent("ddmm_achievement", True),ddmm_default_achievement
-                            #textbutton _("OFF") action SetPersistent("ddmm_achievement", False)
 
                     if not ("steamapps" in config.basedir.lower()):
                         vbox:
@@ -642,19 +891,20 @@ translate None screen:
                                 textbutton _("ON") action SetPersistent("change_buttons", True),change_button_layout
                                 textbutton _("OFF") action SetPersistent("change_buttons", False),change_button_layout
 
-                    if renpy.loadable("debug") and config.console:
+                    if main_menu:
                         vbox:
-                            style_prefix "check"
-                            label _("Debug mode")
-                            textbutton _("ON") action SetPersistent("debug_mode", True),change_button_layout
-                            textbutton _("OFF") action SetPersistent("debug_mode", False),change_button_layout
+                            label _("")
+                            textbutton _("Import DDLC's player name"):
+                                action Show(screen="confirm", message="Would you like to import DDLC's player name?", yes_action=[Hide("confirm"),Function(get_ddlc_player_name)], no_action=Hide("confirm"))
+                                #action Function(import_ddlc_player_name)
+                                style "navigation_button"
 
         text "ddlc_v[config.version]":
             xalign 1.0 yalign 1.0
             xoffset -45 yoffset -30
             style "main_menu_version"
 
-        text "ddmc_v4.1.0":
+        text "ddmc_v4.3.0":
             xalign 1.0 yalign 1.0
             xoffset -43 yoffset -10
             style "main_menu_version"
@@ -778,6 +1028,8 @@ translate None screen:
                     if persistent.chapter == False and persistent.newyear == False and persistent.monikabirth == False:
                         textbutton _("Save") action ShowMenu('save')
                         textbutton _("Load") action ShowMenu('load')
+                        if persistent.autosave_mode:
+                            textbutton _("Auto Save") action Show(screen="confirm", message="Are you sure to load Autosave?\n(It will start from the beginning of the last chapter you viewed.)", yes_action=[Hide("confirm"),Function(autoload_ddmc)], no_action=Hide("confirm"))
 
 
                     textbutton _("Settings") action ShowMenu('preferences')
@@ -845,6 +1097,21 @@ translate None screen:
             if main_menu:
                 textbutton _("Quit") action NullAction()
 
+translate None screen:
+    screen cheat_navigation():
+        vbox:
+            style_prefix "navigation"
+
+            xpos gui.navigation_xpos
+            yalign 0.8
+
+            spacing gui.navigation_spacing
+
+            textbutton _(glitchtext(7)) action Start("you_are_cheater")
+            textbutton _(glitchtext(7)) action NullAction()
+            textbutton _(glitchtext(8)) action NullAction()
+            textbutton _(glitchtext(5)) action NullAction()
+            textbutton _(glitchtext(5)) action NullAction()
 
 init -501 screen chapter1():
     if main_menu:
@@ -1940,9 +2207,39 @@ init -1 style navigation_button_text:
     hover_outlines [(4, "#fac", 0, 0), (2, "#fac", 2, 2)]
     insensitive_outlines [(4, "#fce", 0, 0), (2, "#fce", 2, 2)]
 
+transform menu_bg_move_reverse:
+    subpixel True
+    topleft
+    parallel:
+        xoffset 0 yoffset 0
+        linear 3.0 xoffset 100 yoffset 100
+        repeat
+    parallel:
+        ypos 0
+        time 0.65
+        ease_cubic 2.5 ypos 500
+
+image menu_bg_reverse:
+    topleft
+    "gui/menu_bg.png"
+    menu_bg_move_reverse
+
 translate None screen:
     screen main_menu() tag menu:
-        if persistent.normal_end == 0:
+        if persistent.cheat_detect:
+            style_prefix "main_menu"
+            add "menu_bg_reverse"
+            add "menu_art_y_ghost"
+            add "menu_art_n_ghost"
+            add "menu_art_s_ghost"
+            use cheat_navigation
+            add "menu_particles"
+            add "menu_particles"
+            add "menu_particles"
+            add "menu_logo_glitch"
+            add "menu_art_m_ghost"
+            add "menu_fade"
+        elif persistent.normal_end == 0:
             style_prefix "main_menu"
 
             if persistent.ghost_menu:
@@ -1963,14 +2260,16 @@ translate None screen:
 
                 
                 use navigation
-                if not ddmm_online:
-                    vbox:
-                        textbutton ("Delete Mod"):
-                            action Show(screen="confirm", message="Are you sure you want to delete this mod?\nDDMC's save data will be also deleted", yes_action=Function(UninstallMod), no_action=Hide("confirm"))
-                            style_prefix "main_menu_button"
-                        textbutton ("Delete Savedata"):
-                            action Show(screen="confirm", message="Are you sure you want to delete only save data?", yes_action=Function(delete_all_savedata), no_action=Hide("confirm"))
-                            style_prefix "main_menu_button"
+                vbox:
+                    xpos 1305
+                    textbutton ("Delete Mod"):
+                        action Show(screen="confirm", message="Are you sure you want to delete this mod?\nDDMC's save data will be also deleted", yes_action=Function(UninstallMod), no_action=Hide("confirm"))
+                        style_prefix "main_menu_button"
+                    textbutton ("Delete Savedata"):
+                        action Show(screen="confirm", message="Are you sure you want to delete only save data?", yes_action=Function(delete_all_savedata), no_action=Hide("confirm"))
+                        style_prefix "main_menu_button"
+                    textbutton ("Delete Autosave"):
+                        action Show(screen="confirm", message="Are you sure you want to delete Autosave?", yes_action=[Hide("confirm"),Function(delete_autosave_ddmc)], no_action=Hide("confirm"))
 
             if gui.show_name:
 
@@ -2014,11 +2313,10 @@ translate None screen:
                 add "menu_art_n"
             frame
             use fake_navigation
-            if not ddmm_online:
-                vbox:
-                    textbutton ("Delete Savedata"):
-                        action Show(screen="confirm", message="Are you sure you want to delete only save data?", yes_action=Function(delete_all_savedata), no_action=Hide("confirm"))
-                        style_prefix "main_menu_button"
+            vbox:
+                textbutton ("Delete Savedata"):
+                    action Show(screen="confirm", message="Are you sure you want to delete only save data?", yes_action=Function(delete_all_savedata), no_action=Hide("confirm"))
+                    style_prefix "main_menu_button"
             if persistent.normal_end == 1:
                 add "menu_art_s"
             add "menu_particles"
@@ -2127,7 +2425,7 @@ init -501 screen credits():
         if gui.about:
             text "[gui.about!t]\n"
         xpos 0.25 ypos 0.3
-        text _("The Original Work : Doki Doki Literature Club! by Team Salvato\nProgramming : mayonesu @horizonmayone\nScripts : yamamotoNEW @yamnewb\nCollaborator : katykmas @sinokoki_fps\nTest Players : Natsukiket @natsukiket\nSpecial Thanks to: Chris_K\nSpecial Thanks to: Proudust @proudust\nBackground Art Works: Kimagure After\n")
+        text _("The Original Work : Doki Doki Literature Club! by Team Salvato\nProgramming : mayonesu @horizonmayone\nScripts : yamamotoNEW @yamnewb\nCollaborator : katykmas @katykmas\nTest Players : Natsukiket @natsukiket\nSpecial Thanks to: Chris_K\nSpecial Thanks to: Proudust @proudust\nBackground Art Works: Kimagure After\n")
     textbutton _("Back"):
         style "return_button"
         action Hide("credits"),Jump("special_menu")
@@ -2143,6 +2441,8 @@ init -1 style about_label_text:
     size gui.label_text_size
 
 init -501 screen sound_volume_main():
+    if main_menu:
+        add "bg/special_menu.png"
     add "bg/back.png"
     style_prefix "game_menu"
     hbox:
@@ -2195,6 +2495,8 @@ init -501 screen sound_volume_main():
                 style "return_button"
 
 init -501 screen text_setting_main():
+    if main_menu:
+        add "bg/special_menu.png"
     add "bg/back.png"
     style_prefix "game_menu"
     hbox:
@@ -2277,4 +2579,5 @@ init -501 screen history_other() tag menu:
 
         if not _history_list:
             label _("The dialogue history is empty.")
+
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

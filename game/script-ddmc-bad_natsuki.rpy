@@ -97,8 +97,6 @@ label bad_natsuki_main:
         $ persistent.achievement[2] = True
         play sound "tl/None/sfx/achievement.ogg"
         pause 2.0
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_earn_achievement("BAD_NATSUKI")
     if persistent.chapter == False:
         return
     else:

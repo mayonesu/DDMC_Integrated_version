@@ -127,7 +127,7 @@ label sound_effect():
             python:
                 try: renpy.file(config.basedir + "/sfx_filelist.txt")
                 except: open(config.basedir + "/sfx_filelist.txt", "wt").write(renpy.file("sfx_filelist.txt").read())
-                if renpy.wondows:
+                if renpy.windows:
                     import subprocess
                     subprocess.Popen(['start',sfx_filelist], shell=True)
                 elif renpy.macintosh:

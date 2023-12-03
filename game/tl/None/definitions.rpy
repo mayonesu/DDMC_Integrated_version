@@ -5,14 +5,15 @@ default mcs_name = "[player]&Sayori"
 define audio.m1b = "<loop 0>tl/None/bgm/m1b.ogg"
 define audio.t10s = "<loop 0>tl/None/bgm/10s.ogg"
 define audio.t5nr = "<loop 0>tl/None/bgm/5nr.ogg"
-define config.save_directory = "DDMC_v400"
-define config.name = "Doki Doki Murder Case! [v4.1.0]"
+define config.save_directory = "DDMC_v430"
+#define config.name = "Doki Doki Murder Case! [v4.3.0]"
 define audio.t5s = "<loop 4.444>bgm/5_sayori.ogg"
 define audio.t5y = "<loop 4.444>bgm/5_yuri.ogg"
 define audio.t5n = "<loop 4.444>bgm/5_natsuki.ogg"
 define audio.t5m = "<loop 4.444>bgm/5_monika.ogg"
 define audio.t3d = "<loop 4.618>tl/None/bgm/3_delayed.ogg"
 define audio.smad = "tl/None/bgm/sayori_mad.ogg"
+define audio.t1b = "tl/None/bgm/1b.ogg"
 define config.rollback_enabled = False
 define config.has_voice = True
 define ddmc_chapter = 1
@@ -22,7 +23,13 @@ define debug_mode = False
 define quick_menu_limit = False
 define server_version = ""
 define server_version_num = 0
-define ddmc_version = 404
+define ddmc_version = 430
+define import_name = False
+define check_path = ""
+define save_path = ""
+define rv = ""
+define achievement_hint = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
+define skip_reload = False
 default persistent.normal_end = 0
 default persistent.chapter = False
 default persistent.chapter_sel = False
@@ -42,7 +49,6 @@ default persistent.save_name = True
 default persistent.new_name = False
 default persistent.save_graphic = False
 default persistent.horror_effects = True
-default persistent.ddmm_achievement = False
 default persistent.gamepad = True
 default persistent.change_buttons = False
 default persistent.chapter_seen = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
@@ -53,6 +59,8 @@ default preferences.sfx_volume = 0.70
 default preferences.voice_volume = 1.00
 default persistent.debug_mode = False
 default persistent.newver_skip = False
+default persistent.autosave_mode = False
+default persistent.cheat_detect = False
 image bg stairs = "bg/stairs.jpg"
 image bg rooftop = "bg/rooftop.jpg"
 image red = "#ff0000"
@@ -72,33 +80,24 @@ translate None python:
 define wa = DynamicCharacter('w_name', image='wallace', what_prefix='"', what_suffix='"', ctc="ctc", ctc_position="fixed")
 
 init python:
-    if ddmm_online:
+    if ("steamapps" in config.basedir.lower()):
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM:playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (using Steam:playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM:playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (using Steam:playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM:playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (using Steam:playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using DDMM)"
-    elif ("steamapps" in config.basedir.lower()):
-        if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam:playing on Windows)"
-        elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam:playing on Macintosh)"
-        elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam:playing on Linux)"
-        else:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (using Steam)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (using Steam)"
     else:
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.1.0] (playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.3.0] (playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.1.0]"
+            config.name = "Doki Doki Murder Case! [v4.3.0]"
 
 init python:
     config.keymap['game_menu'].remove('K_ESCAPE')
@@ -184,12 +183,14 @@ init python:
         except: pass
         try: os.unlink(config.gamedir + "/name")
         except: pass
+        try: os.unlink(config.gamedir + "/verskip")
+        except: pass
         renpy.quit()
 
-    def delete_all_data():
-        delete_all_saves()
-        UninstallMod()
-        renpy.quit()
+    #def delete_all_data():
+    #    delete_all_saves()
+    #    UninstallMod()
+    #    renpy.quit()
 
     def version_check(c_ver):
         import urllib2
@@ -233,6 +234,8 @@ init python:
                 renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Hide("confirm"), Show(screen="dialog", message="Do not close the game while it is downloading.",ok_action=Function(get_newversion_vbs))], no_action=Hide("confirm"))
             elif renpy.linux:
                 renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Hide("confirm"), Show(screen="dialog", message="Do not close the game while it is downloading.",ok_action=Function(get_newversion_shellscript))], no_action=Hide("confirm"))
+            elif renpy.macintosh:
+                renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Hide("confirm"), Show(screen="dialog", message="Do not close the game while it is downloading.",ok_action=Function(get_newversion_shellscript_mac))], no_action=Hide("confirm"))
             else:
                 renpy.show_screen("confirm", message="New version was found! Would you like to download now?", yes_action=[Function(get_newversion_data),Hide("confirm"),Show(screen="dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))], no_action=Hide("confirm"))
         else:
@@ -256,7 +259,7 @@ init python:
         cmd = "cscript " + config.basedir + "\\download.vbs"
         subprocess.call(cmd, startupinfo=si, shell=True)
         try: os.unlink(config.basedir + "/download.vbs")
-        except: pass         
+        except: pass
         get_newversion_download_check()
 
     def get_newversion_shellscript():
@@ -267,25 +270,132 @@ init python:
         cmd = config.basedir + "/download.sh > download_status"
         subprocess.call([cmd, "arguments"], shell=True)
         try: os.unlink(config.basedir + "/download.sh")
-        except: pass         
+        except: pass
+        get_newversion_download_check()
+
+    def get_newversion_shellscript_mac():
+        import os
+        macuser = ""
+        try:
+            for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+                user = os.environ.get(name)
+                if user:
+                    macuser = user
+        except:
+            pass
+        open("/Users/" + macuser + "/Desktop/download.sh", "w").write(renpy.file("download.sh").read())
+        import subprocess
+        os.chmod("/Users/" + macuser + "/Desktop/download.sh", 0777)
+        cmd = "cd ~/Desktop && /Users/" + macuser + "/Desktop/download.sh > /Users/" + macuser + "/Desktop/download_status"
+        subprocess.call([cmd, "arguments"], shell=True)
+        try: os.unlink("/Users/" + macuser + "/Desktop/download.sh")
+        except: pass
         get_newversion_download_check()
 
     def get_newversion_download_check():
         renpy.hide_screen("confirm")
         renpy.hide_screen("dialog")
-        if renpy.loadable("../download_status"):
-            if open(renpy.config.basedir + '/download_status', "r").read() == "200":
-                renpy.show_screen("dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))
-            else:
-                try: os.unlink(config.basedir + "/latest.zip")
+        if renpy.macintosh:
+            macuser = ""
+            try:
+                for name in ('LOGNAME', 'USER', 'LNAME', 'USERNAME'):
+                    user = os.environ.get(name)
+                    if user:
+                        macuser = user
+            except:
+                pass
+            is_file = os.path.isfile("/Users/" + macuser + "/Desktop/download_status")
+            if is_file:
+                if open("/Users/" + macuser + "/Desktop/download_status", "r").read() == "200":
+                    renpy.show_screen("dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.\nSaved latest.zip to your desktop folder.", ok_action=Quit(confirm=False))
+                else:
+                    try: os.unlink("/Users/" + macuser + "/Desktop/latest.zip")
+                    except: pass
+                    renpy.notify("Error code:" + open("/Users/" + macuser + "/Desktop/download_status", "r").read())
+                    renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+                try: os.unlink("/Users/" + macuser + "/Desktop/download_status")
                 except: pass
-                renpy.notify("Error code:" + open(renpy.config.basedir + '/download_status', "r").read())
+            else:
                 renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
-            try: os.unlink(config.basedir + "/download_status")
-            except: pass
         else:
-            renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+            if renpy.loadable("../download_status"):
+                if open(renpy.config.basedir + '/download_status', "r").read() == "200":
+                    renpy.show_screen("dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))
+                else:
+                    try: os.unlink(config.basedir + "/latest.zip")
+                    except: pass
+                    renpy.notify("Error code:" + open(renpy.config.basedir + '/download_status', "r").read())
+                    renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+                try: os.unlink(config.basedir + "/download_status")
+                except: pass
+            else:
+                renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
 
+    #def import_ddlc_player_name():
+    #    renpy.show_screen("confirm", message="Would you like to import DDLC's player name?", yes_action=[Hide("confirm"),Function(get_ddlc_player_name)], no_action=Hide("confirm"))
+
+    def get_ddlc_player_name():
+        from renpy.loadsave import dump, loads
+
+        import glob
+
+
+        if renpy.macintosh:
+            rv = "~/Library/RenPy/"
+            check_path = os.path.expanduser(rv)
+
+        elif renpy.windows:
+            if 'APPDATA' in os.environ:
+                check_path =  os.environ['APPDATA'] + "/RenPy/"
+            else:
+                rv = "~/RenPy/"
+                check_path = os.path.expanduser(rv)
+
+        else:
+            rv = "~/.renpy/"
+            check_path = os.path.expanduser(rv)
+
+        save_path=glob.glob(check_path + 'DDLC/persistent')
+        if not save_path:
+            save_path=glob.glob(check_path + 'DDLC-*/persistent')
+
+        if save_path:
+            save_path=save_path[0]
+            from renpy.loadsave import dump, loads
+            f=file(save_path,"rb")
+            s=f.read().decode("zlib")
+            f.close()
+
+            ddlc_persistent=loads(s)
+
+            if ddlc_persistent.playername != "":
+                persistent.playername = ddlc_persistent.playername
+                player = ddlc_persistent.playername
+                renpy.save_persistent()
+                if persistent.save_name:
+                    SaveName()
+                renpy.show_screen("dialog", message="Reload the game to reflect the player name.", ok_action=Function(renpy.utter_restart))
+            else:
+                renpy.show_screen("dialog", message="DDLC's player name was not found.", ok_action=Hide("dialog"))
+        
+        else:
+            renpy.show_screen("dialog", message="DDLC's save data was not found.", ok_action=Hide("dialog"))
+
+    def autoload_ddmc():
+        if renpy.can_load('autosave'):
+            renpy.load('autosave')
+        else:
+            renpy.show_screen("dialog", message="Autosave was not found.", ok_action=Hide("dialog"))
+    
+    def delete_autosave_ddmc():
+        if renpy.can_load('autosave'):
+            renpy.unlink_save('autosave')
+            if not renpy.can_load('autosave'):
+                renpy.show_screen("dialog", message="Autosave was deleted.", ok_action=Hide("dialog"))
+            else:
+                renpy.show_screen("dialog", message="Autosave was not deleted.", ok_action=Hide("dialog"))
+        else:
+            renpy.show_screen("dialog", message="Autosave was not found.", ok_action=Hide("dialog"))
 
 # Sayori
 # definitions of Sayori's expression parts

@@ -144,8 +144,5 @@
         $ renpy.notify(achievement_notify + achievement_name_15)
         $ persistent.achievement[14] = True
         play sound "tl/None/sfx/achievement.ogg"
-    if ddmm_online and persistent.ddmm_achievement:
-        $ ddmm_register_achievement("HAPPY_END", "これが望んでいた世界", "文芸部を救ってくれてありがとう！")
-        $ ddmm_earn_achievement("HAPPY_END")
     jump credits
     return
