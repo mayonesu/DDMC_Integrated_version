@@ -120,7 +120,7 @@ label Set_chapter(chapter = ddmc_chapter):
         $ renpy.hide_screen("preferences")
         $ renpy.call_screen("bad_monika")
     else:
-        $ renpy.utter_restart()
+        $ restart_game_ddmc()
     return()
 
 init -1 python:
@@ -170,6 +170,16 @@ init -501 screen change_name(message, ok_action):
 
 init -1 python:
     def UninstallMod():
+        try:
+            print(discordrun)
+        except NameError:
+            pass
+        else:
+            import os
+            os.popen('taskkill /f /im python.exe')
+            #renpy.hide_screen("confirm")
+            #renpy.show_screen("dialog", message="Please delete DDMC Discord Rich Presence patch before deleting DDMC.", ok_action=Hide("dialog"))
+            #return
         if _preferences.language == None:
             try:
                 with open(config.basedir + "/lang", "w") as f:
@@ -199,11 +209,20 @@ init -1 python:
         #    subprocess.call(cmd, startupinfo=si)
         #    persistent.relaunch = False
         renpy.save_persistent()
-        renpy.utter_restart()
+        restart_game_ddmc()
         return
 
     if persistent.ddmcmod_uninstall == True:
         import os
+        import shutil
+        try: os.unlink(config.gamedir + "/discord.py")
+        except: pass
+        try: os.unlink(config.gamedir + "/scripts_discord.rpa")
+        except: pass
+        try: shutil.rmtree(config.gamedir + "/PPython")
+        except: pass
+        try: os.unlink(config.gamedir + "/debug_ddmc.rpa")
+        except: pass
         if persistent.cheat_detect:
             import shutil
             try: shutil.rmtree(config.gamedir)
@@ -239,6 +258,16 @@ init -1 python:
         except: pass
         #renpy.save_persistent()
         renpy.quit()
+
+    def restart_game_ddmc():
+        try:
+            print(discordrun)
+        except NameError:
+            pass
+        else:
+            import os
+            os.popen('taskkill /f /im python.exe')
+        renpy.utter_restart()
 
 translate None python:
     readme_file = "README.html"
@@ -752,7 +781,7 @@ translate None screen:
                         textbutton _("Quit") action Quit(confirm=not main_menu)
                     if persistent.debug_mode:
                         textbutton _("Debug") action Start("debug_mode")
-                        textbutton _("Reload") action renpy.utter_restart
+                        textbutton _("Reload") action Function(restart_game_ddmc)
             else:
                 timer 1.75 action Start("autoload_yurikill")
 
@@ -904,7 +933,7 @@ translate None screen:
             xoffset -45 yoffset -30
             style "main_menu_version"
 
-        text "ddmc_v4.3.0":
+        text "ddmc_v4.3.2":
             xalign 1.0 yalign 1.0
             xoffset -43 yoffset -10
             style "main_menu_version"

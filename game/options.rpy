@@ -217,6 +217,7 @@ init python:
     build.archive("jp_ddmc", "all")
     build.archive("scripts_ddmc", "all")
     build.archive("debug_ddmc", "all")
+    build.archive("scripts_discord", "all")
 
     build.classify("game/script-**.rpyc", "scripts_ddmc")
     build.classify("game/sound_test.rpyc", "scripts_ddmc")
@@ -224,6 +225,8 @@ init python:
     build.classify("game/**.sh", "scripts_ddmc")
     build.classify("game/ddmm_sdk.rpyc", "scripts_ddmc")
     build.classify("game/**.txt", "scripts_ddmc")
+    build.classify("game/setupRPC.rpyc", "scripts_discord")
+    build.classify("game/splash_additional.rpyc", "scripts_discord")
 
     build.classify("game/tl/None/**.rpyc", "none_ddmc")
     build.classify("game/tl/None/bgm/**.ogg", "none_ddmc")

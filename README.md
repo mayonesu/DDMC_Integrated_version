@@ -1,5 +1,5 @@
 # Doki Doki Murder Case!
-# RenpySDK用プロジェクト(統合版(ver4.3.0以降))
+# RenpySDK用プロジェクト(統合版(ver4.3.2以降))
 
 ## Description
 DDLCのMODであるDDMCの公式プロジェクトになります。

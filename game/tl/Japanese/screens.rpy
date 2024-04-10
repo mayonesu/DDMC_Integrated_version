@@ -502,4 +502,7 @@ translate Japanese strings:
 
     old "Language settings was already changed."
     new "言語設定はすでに変更済みです。"
+
+    old "Please delete DDMC Discord Rich Presence patch before deleting DDMC."
+    new "DDMCをアンインストールする前に、DDMC Discord Rich Presenceパッチを先に削除してください。"
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

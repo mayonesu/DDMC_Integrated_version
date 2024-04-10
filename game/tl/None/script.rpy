@@ -140,6 +140,14 @@ translate None label:
         pause 5.0
         if not persistent.achievement[15]:
             $ persistent.achievement[15] = True
+        python:
+            try:
+                print(discordrun)
+            except NameError:
+                pass
+            else:
+                import os
+                os.popen('taskkill /f /im python.exe')
         $ renpy.quit()
 
 image yct = Movie(play="cheater.webm", size=(1280,720), loop=True)

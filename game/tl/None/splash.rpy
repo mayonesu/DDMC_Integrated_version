@@ -188,6 +188,14 @@ translate None label:
                         else:
                             $ get_newversion_data()
                             "Quit the game. After downloading and updating the patch, please launch the game again."
+                            python:
+                                try:
+                                    print(discordrun)
+                                except NameError:
+                                    pass
+                                else:
+                                    import os
+                                    os.popen('taskkill /f /im python.exe')
                             $ renpy.quit()
                     "No":
                         #いいえの場合は何もしないが、次回以降も再度チェックする。
@@ -317,7 +325,7 @@ translate None label:
                             delete_all_saves()
                             renpy.loadsave.location.unlink_persistent()
                             renpy.persistent.should_save_persistent = False
-                            renpy.utter_restart()
+                            restart_game_ddmc()
                     "No, continue where I left off.":
                         $ restore_relevant_characters()
 
@@ -339,6 +347,14 @@ translate None label:
                     "Deleting DDLC UNOFFICIAL JP PATCH...{nw}"
                     $ Uninstall()
                 "No":
+                    python:
+                        try:
+                            print(discordrun)
+                        except NameError:
+                            pass
+                        else:
+                            import os
+                            os.popen('taskkill /f /im python.exe')
                     $ renpy.quit()
 
         if firstrun and (persistent.oncedeleted_ddmcmod == True or persistent.oncedeleted_jppatch == True):
@@ -712,7 +728,7 @@ translate None label:
             if not skip_reload:
                 pause 1.0
                 "Reload the game to reflect the settings."
-                $ renpy.utter_restart()
+                $ restart_game_ddmc()
             #if import_name:
             #    "Reload the game to reflect the player name."
             #    $ renpy.utter_restart()
@@ -821,6 +837,14 @@ translate None label:
                 600
                 linear 60 alpha 0.5
             pause
+            python:
+                try:
+                    print(discordrun)
+                except NameError:
+                    pass
+                else:
+                    import os
+                    os.popen('taskkill /f /im python.exe')
             $ renpy.quit()
 
         if not renpy.loadable("../lang"):
@@ -855,6 +879,14 @@ translate None label:
                 "Yes":
                     "Thank you."
                     $ persistent.cheat_detect = False
+                    python:
+                        try:
+                            print(discordrun)
+                        except NameError:
+                            pass
+                        else:
+                            import os
+                            os.popen('taskkill /f /im python.exe')
                     $ renpy.quit()
                 "No":
                     "{b}I don't know what will happen.{/b}"
