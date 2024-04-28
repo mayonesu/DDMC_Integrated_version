@@ -23,7 +23,7 @@ define debug_mode = False
 define quick_menu_limit = False
 define server_version = ""
 define server_version_num = 0
-define ddmc_version = 432
+define ddmc_version = 433
 define import_name = False
 define check_path = ""
 define save_path = ""
@@ -82,22 +82,22 @@ define wa = DynamicCharacter('w_name', image='wallace', what_prefix='"', what_su
 init python:
     if ("steamapps" in config.basedir.lower()):
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (using Steam:playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam:playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (using Steam:playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam:playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (using Steam:playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam:playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (using Steam)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam)"
     else:
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.3.2] (playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.3.3] (playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.3.2]"
+            config.name = "Doki Doki Murder Case! [v4.3.3]"
 
 init python:
     config.keymap['game_menu'].remove('K_ESCAPE')
@@ -381,7 +381,7 @@ init python:
                 renpy.save_persistent()
                 if persistent.save_name:
                     SaveName()
-                renpy.show_screen("dialog", message="Reload the game to reflect the player name.", ok_action=Function(renpy.utter_restart))
+                renpy.show_screen("dialog", message="Reload the game to reflect the player name.", ok_action=Function(restart_game_ddmc))
             else:
                 renpy.show_screen("dialog", message="DDLC's player name was not found.", ok_action=Hide("dialog"))
         

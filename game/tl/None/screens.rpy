@@ -135,9 +135,9 @@ init -1 python:
             SaveName()
         if persistent.change_language:
             persistent.change_language = False
-            renpy.show_screen("dialog", message="Now reload the game for Language settings.", ok_action=renpy.reload_script)
+            renpy.show_screen("dialog", message="Now reload the game for Language settings.", ok_action=Function(restart_game_ddmc))
         else:
-            renpy.show_screen("dialog", message="Now reload the game for name changing.", ok_action=renpy.reload_script)
+            renpy.show_screen("dialog", message="Now reload the game for name changing.", ok_action=Function(restart_game_ddmc))
 
 init -501 screen change_name(message, ok_action):
     modal True
@@ -877,8 +877,8 @@ translate None screen:
                     vbox:
                         style_prefix "check"
                         label _("Save name")
-                        textbutton _("ON") action If(not renpy.loadable("name") and persistent.playername, true=[SetPersistent("save_name", True),Show(screen="confirm", message="Do you want to save name file?",yes_action=[Function(SaveName),Hide("confirm"),Show(screen="dialog", message="Now reload the game for \"save name\"setting", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),renpy.reload_script])], no_action=Hide("confirm"))], false=SetPersistent("save_name", True))
-                        textbutton _("OFF") action If(renpy.loadable("name"), true=[SetPersistent("save_name", False),Show(screen="confirm", message="Do you want to delete name file?",yes_action=[Function(DeleteNameFile),Hide("confirm"),Show(screen="dialog", message="Now reload the game for \"save name\"setting", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),renpy.reload_script])], no_action=Hide("confirm"))], false=SetPersistent("save_name", False))
+                        textbutton _("ON") action If(not renpy.loadable("name") and persistent.playername, true=[SetPersistent("save_name", True),Show(screen="confirm", message="Do you want to save name file?",yes_action=[Function(SaveName),Hide("confirm"),Show(screen="dialog", message="Now reload the game for \"save name\"setting", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),Function(restart_game_ddmc)])], no_action=Hide("confirm"))], false=SetPersistent("save_name", True))
+                        textbutton _("OFF") action If(renpy.loadable("name"), true=[SetPersistent("save_name", False),Show(screen="confirm", message="Do you want to delete name file?",yes_action=[Function(DeleteNameFile),Hide("confirm"),Show(screen="dialog", message="Now reload the game for \"save name\"setting", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),Function(restart_game_ddmc)])], no_action=Hide("confirm"))], false=SetPersistent("save_name", False))
 
                     if main_menu and datetime.date.today().year == 2019 and datetime.date.today().month == 9 and datetime.date.today().day == 22 and _preferences.language != None and not persistent.chapter and not persistent.newyear:
                         vbox:
@@ -910,8 +910,8 @@ translate None screen:
                         vbox:
                             style_prefix "check"
                             label _("Gamepad")
-                            textbutton _("ON") action [SetPersistent("gamepad", True),Show(screen="dialog", message="Now reload the game for Gamepad settings.", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),renpy.reload_script])]
-                            textbutton _("OFF") action [SetPersistent("gamepad", False),Show(screen="dialog", message="Now reload the game for Gamepad settings.", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),renpy.reload_script])]
+                            textbutton _("ON") action [SetPersistent("gamepad", True),Show(screen="dialog", message="Now reload the game for Gamepad settings.", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),Function(restart_game_ddmc)])]
+                            textbutton _("OFF") action [SetPersistent("gamepad", False),Show(screen="dialog", message="Now reload the game for Gamepad settings.", ok_action=[If(main_menu, true=SetPersistent("relaunch", True), false=SetPersistent("relaunch", False)),Function(restart_game_ddmc)])]
 
                         if persistent.gamepad:
                             vbox:
@@ -933,7 +933,7 @@ translate None screen:
             xoffset -45 yoffset -30
             style "main_menu_version"
 
-        text "ddmc_v4.3.2":
+        text "ddmc_v4.3.3":
             xalign 1.0 yalign 1.0
             xoffset -43 yoffset -10
             style "main_menu_version"
