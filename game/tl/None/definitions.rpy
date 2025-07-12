@@ -6,7 +6,7 @@ define audio.m1b = "<loop 0>tl/None/bgm/m1b.ogg"
 define audio.t10s = "<loop 0>tl/None/bgm/10s.ogg"
 define audio.t5nr = "<loop 0>tl/None/bgm/5nr.ogg"
 define config.save_directory = "DDMC_v430"
-#define config.name = "Doki Doki Murder Case! [v4.3.0]"
+#define config.name = "Doki Doki Murder Case! [v4.3.5]"
 define audio.t5s = "<loop 4.444>bgm/5_sayori.ogg"
 define audio.t5y = "<loop 4.444>bgm/5_yuri.ogg"
 define audio.t5n = "<loop 4.444>bgm/5_natsuki.ogg"
@@ -23,7 +23,7 @@ define debug_mode = False
 define quick_menu_limit = False
 define server_version = ""
 define server_version_num = 0
-define ddmc_version = 433
+define ddmc_version = 435
 define import_name = False
 define check_path = ""
 define save_path = ""
@@ -82,22 +82,22 @@ define wa = DynamicCharacter('w_name', image='wallace', what_prefix='"', what_su
 init python:
     if ("steamapps" in config.basedir.lower()):
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam:playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (using Steam:playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam:playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (using Steam:playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam:playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (using Steam:playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (using Steam)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (using Steam)"
     else:
         if renpy.windows:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (playing on Windows)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (playing on Windows)"
         elif renpy.macintosh:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (playing on Macintosh)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (playing on Macintosh)"
         elif renpy.linux:
-            config.name = "Doki Doki Murder Case! [v4.3.3] (playing on Linux)"
+            config.name = "Doki Doki Murder Case! [v4.3.5] (playing on Linux)"
         else:
-            config.name = "Doki Doki Murder Case! [v4.3.3]"
+            config.name = "Doki Doki Murder Case! [v4.3.5]"
 
 init python:
     config.keymap['game_menu'].remove('K_ESCAPE')
@@ -209,6 +209,9 @@ init python:
         except urllib2.HTTPError, e:
             renpy.notify("Couldn't check for the latest version because the server could not be contacted.")
             ver_num = -999
+        except:
+            renpy.notify("The version check could not be performed because the server could not be accessed.")
+            return True
         if ver_num == -999:
             ver_check = True
             return ver_check
@@ -229,8 +232,11 @@ init python:
             ver_num = -999
             e_code = str(e.code)
             renpy.notify(e_code + ':' + e.reason)
+        except:
+            renpy.show_screen("dialog", message="Connection Error!\nThe version check could not be performed because the server could not be accessed.\nIf it does not improve even after waiting, please contact the creator's X.(@horizonmayone)", ok_action=Hide("dialog"))
+            return
         if ver_num == -999:
-            renpy.show_screen("dialog", message="Connection Error!\nIf it does not improve even after waiting, please contact the creator's Twitter.(@horizonmayone)", ok_action=Hide("dialog"))
+            renpy.show_screen("dialog", message="Connection Error!\nIf it does not improve even after waiting, please contact the creator's X.(@horizonmayone)", ok_action=Hide("dialog"))
             return
         if ddmc_version < ver_num:
             ver_check = False
@@ -258,14 +264,17 @@ init python:
         webbrowser.open(download_url)
     
     def get_newversion_vbs():
-        open(config.basedir + "/download.vbs", "w").write(renpy.file("download.vbs").read())
+        #open(config.basedir + "/download.vbs", "w").write(renpy.file("download.vbs").read())
+        open(config.basedir + "/download.ps1", "w").write(renpy.file("download.ps1").read())
         import os
         import subprocess
         si = subprocess.STARTUPINFO()
         si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        cmd = "cscript " + config.basedir + "\\download.vbs"
+        #cmd = "cscript " + config.basedir + "\\download.vbs"
+        cmd = "powershell -ExecutionPolicy RemoteSigned -File \"" + config.basedir + "\\download.ps1\""
         subprocess.call(cmd, startupinfo=si, shell=True)
-        try: os.unlink(config.basedir + "/download.vbs")
+        #try: os.unlink(config.basedir + "/download.vbs")
+        try: os.unlink(config.basedir + "/download.ps1")
         except: pass
         get_newversion_download_check()
 
@@ -319,24 +328,26 @@ init python:
                     try: os.unlink("/Users/" + macuser + "/Desktop/latest.zip")
                     except: pass
                     renpy.notify("Error code:" + open("/Users/" + macuser + "/Desktop/download_status", "r").read())
-                    renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+                    renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's X(@horizonmayone).", ok_action=Hide("dialog"))
                 try: os.unlink("/Users/" + macuser + "/Desktop/download_status")
                 except: pass
             else:
-                renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+                renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's X(@horizonmayone).", ok_action=Hide("dialog"))
         else:
             if renpy.loadable("../download_status"):
-                if open(renpy.config.basedir + '/download_status', "r").read() == "200":
+                import re
+                status = re.sub(r"\D", "", open(renpy.config.basedir + '/download_status', "r").read())
+                if status == "200":
                     renpy.show_screen("dialog", message="Quit the game. After downloading and updating the patch, please launch the game again.", ok_action=Quit(confirm=False))
                 else:
                     try: os.unlink(config.basedir + "/latest.zip")
                     except: pass
-                    renpy.notify("Error code:" + open(renpy.config.basedir + '/download_status', "r").read())
-                    renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+                    renpy.notify("Error code:" + status)
+                    renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's X(@horizonmayone).", ok_action=Hide("dialog"))
                 try: os.unlink(config.basedir + "/download_status")
                 except: pass
             else:
-                renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone).", ok_action=Hide("dialog"))
+                renpy.show_screen("dialog", message="An error occurred while downloading.\nIf you can't do it again, please contact the creator's X(@horizonmayone).", ok_action=Hide("dialog"))
 
     #def import_ddlc_player_name():
     #    renpy.show_screen("confirm", message="Would you like to import DDLC's player name?", yes_action=[Hide("confirm"),Function(get_ddlc_player_name)], no_action=Hide("confirm"))

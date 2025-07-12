@@ -71,14 +71,17 @@ label ch9_main:
     m "It makes much easier that you see it."
     if renpy.windows and _preferences.language != None and not ("steamapps" in config.basedir.lower()):
         python:
-            open(config.basedir + "/monika.vbs", "w").write(renpy.file("monika.vbs").read())
+            #open(config.basedir + "/monika.vbs", "w").write(renpy.file("monika.vbs").read())
+            open(config.basedir + "/monika.ps1", "w").write(renpy.file("monika.ps1").read())
             import os
             import subprocess
             si = subprocess.STARTUPINFO()
             si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            cmd = "cscript " + config.basedir + "\\monika.vbs"
+            #cmd = "cscript " + config.basedir + "\\monika.vbs"
+            cmd = "powershell -ExecutionPolicy RemoteSigned -File \"" + config.basedir + "\\monika.ps1\""
             subprocess.call(cmd, startupinfo=si)
-            os.unlink(config.basedir + "/monika.vbs")
+            #os.unlink(config.basedir + "/monika.vbs")
+            os.unlink(config.basedir + "/monika.ps1")
     else:
         $ renpy.call_screen("dialog", message="Okay everyone?", ok_action=Return())
     window hide(None)

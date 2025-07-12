@@ -69,8 +69,8 @@ translate Japanese strings:
     old "Which scene would you like to start?"
     new "どのシーンから始めますか？"
 
-    old "Connection Error!\nIf it does not improve even after waiting, please contact the creator's Twitter.(@horizonmayone)"
-    new "接続エラーが発生しました！\n待っても改善されなければ、制作者のTwitterへご連絡ください。(@horizonmayone)"
+    old "Connection Error!\nIf it does not improve even after waiting, please contact the creator's X.(@horizonmayone)"
+    new "接続エラーが発生しました！\n待っても改善されなければ、制作者のXへご連絡ください。(@horizonmayone)"
 
     old "Couldn't check for the latest version because the server could not be contacted."
     new "サーバーに接続できなかったため、最新のバージョンを確認できませんでした。"
@@ -81,8 +81,8 @@ translate Japanese strings:
     old "Do not close the game while it is downloading."
     new "ダウンロード中はゲームを閉じないでください。"
 
-    old "An error occurred while downloading.\nIf you can't do it again, please contact the creator's Twitter(@horizonmayone)."
-    new "ダウンロード中にエラーが発生しました。\n再度実行してもダウンロードできない場合、製作者のTwitter(@horizonmayone)までご連絡ください。"
+    old "An error occurred while downloading.\nIf you can't do it again, please contact the creator's X(@horizonmayone)."
+    new "ダウンロード中にエラーが発生しました。\n再度実行してもダウンロードできない場合、製作者のX(@horizonmayone)までご連絡ください。"
 
     old "Would you like to import DDLC's player name?"
     new "DDLCの主人公名を引き継ぎますか？"
@@ -107,5 +107,11 @@ translate Japanese strings:
 
     old "autosaved."
     new "オートセーブしました。"
+
+    old "The version check could not be performed because the server could not be accessed."
+    new "サーバーにアクセスできなかったため、バージョンチェックができませんでした。"
+
+    old "Connection Error!\nThe version check could not be performed because the server could not be accessed.\nIf it does not improve even after waiting, please contact the creator's X.(@horizonmayone)"
+    new "接続エラーが発生しました！\nサーバーにアクセスできなかったため、バージョンチェックができませんでした。\n待っても改善されなければ、制作者のXへご連絡ください。(@horizonmayone)"
 
 # Decompiled by unrpyc: https://github.com/CensoredUsername/unrpyc

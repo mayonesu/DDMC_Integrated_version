@@ -15,8 +15,8 @@ init python:
     player = persistent.playername
     message = "Hey," + currentuser + "?"
     message2 = "\"Hey,another " + player + "?\""
-    message_vbs = "Call MsgBox(\""+player+" \"\""+message+"\"\"\",vbInformation,\"DDLC.exe\")"
-    message2_vbs = "Call MsgBox(\""+player+" \"\""+message2+"\"\"\",vbInformation,\"DDLC.exe\")"
+    #message_vbs = "Call MsgBox(\""+player+" \"\""+message+"\"\"\",vbInformation,\"DDLC.exe\")"
+    #message2_vbs = "Call MsgBox(\""+player+" \"\""+message2+"\"\"\",vbInformation,\"DDLC.exe\")"
 
 label normal_end:
     if not renpy.loadable("debug") and config.console:
@@ -193,19 +193,22 @@ label normal_end2:
                 #$ tip.showWindow(player,message)
                 if not ("steamapps" in config.basedir.lower()):
                     python:
-                        try:
-                            with open(config.basedir + "/normal.vbs", "w") as f:
-                                f.write(message_vbs)
-                                f.close
-                        except:
-                            pass
+                        #try:
+                        #    with open(config.basedir + "/normal.vbs", "w") as f:
+                        #        f.write(message_vbs)
+                        #        f.close
+                        #except:
+                        #    pass
+                        open(config.basedir + "/normal_message.ps1", "w").write(renpy.file("normal_message.ps1").read())
                         import os
                         import subprocess
                         si = subprocess.STARTUPINFO()
                         si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-                        cmd = "cscript " + config.basedir + "\\normal.vbs"
+                        #cmd = "cscript " + config.basedir + "\\normal.vbs"
+                        cmd = "powershell -ExecutionPolicy RemoteSigned -File \"" + config.basedir + "\\normal_message.ps1\" \"" + message + "\" \"" + player + "\""
                         subprocess.call(cmd, startupinfo=si)
-                        os.unlink(config.basedir + "/normal.vbs")
+                        #os.unlink(config.basedir + "/normal.vbs")
+                        os.unlink(config.basedir + "/normal_message.ps1")
                 else:
                     mc "Hey,[currentuser]?"
         else:
@@ -232,19 +235,22 @@ label normal_end2:
                 #$ tip.showWindow(player,message2)
                 if not ("steamapps" in config.basedir.lower()):
                     python:
-                        try:
-                            with open(config.basedir + "/normal.vbs", "w") as f:
-                                f.write(message_vbs)
-                                f.close
-                        except:
-                            pass
+                        #try:
+                        #    with open(config.basedir + "/normal.vbs", "w") as f:
+                        #        f.write(message_vbs)
+                        #        f.close
+                        #except:
+                        #    pass
+                        open(config.basedir + "/normal_message.ps1", "w").write(renpy.file("normal_message.ps1").read())
                         import os
                         import subprocess
                         si = subprocess.STARTUPINFO()
                         si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-                        cmd = "cscript " + config.basedir + "\\normal.vbs"
+                        #cmd = "cscript " + config.basedir + "\\normal.vbs"
+                        cmd = "powershell -ExecutionPolicy RemoteSigned -File \"" + config.basedir + "\\normal_message.ps1\" \"" + message2 + "\" \"" + player + "\""
                         subprocess.call(cmd, startupinfo=si)
-                        os.unlink(config.basedir + "/normal.vbs")
+                        #os.unlink(config.basedir + "/normal.vbs")
+                        os.unlink(config.basedir + "/normal_message.ps1")
                 else:
                     mc "Hey,another [player]?"
 
@@ -256,19 +262,22 @@ label normal_end2:
             #$ tip.showWindow(player,message2)
             if not ("steamapps" in config.basedir.lower()):
                 python:
-                    try:
-                        with open(config.basedir + "/normal.vbs", "w") as f:
-                            f.write(message2_vbs)
-                            f.close
-                    except:
-                        pass
+                    #try:
+                    #    with open(config.basedir + "/normal.vbs", "w") as f:
+                    #        f.write(message2_vbs)
+                    #        f.close
+                    #except:
+                    #    pass
+                    open(config.basedir + "/normal_message.ps1", "w").write(renpy.file("normal_message.ps1").read())
                     import os
                     import subprocess
                     si = subprocess.STARTUPINFO()
                     si.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-                    cmd = "cscript " + config.basedir + "\\normal.vbs"
+                    #cmd = "cscript " + config.basedir + "\\normal.vbs"
+                    cmd = "powershell -ExecutionPolicy RemoteSigned -File \"" + config.basedir + "\\normal_message.ps1\" \"" + message2 + "\" \"" + player + "\""
                     subprocess.call(cmd, startupinfo=si)
-                    os.unlink(config.basedir + "/normal.vbs")
+                    #os.unlink(config.basedir + "/normal.vbs")
+                    os.unlink(config.basedir + "/normal_message.ps1")
             else:
                 mc "Hey,another [player]?"
     if not persistent.achievement[4]:
